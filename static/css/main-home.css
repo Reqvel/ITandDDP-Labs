@@ -8,6 +8,8 @@
     position: absolute;
     margin-left: 12vw;
     margin-top: 30vh;
+    animation-name: appear;
+    animation-duration: 600ms;
 }
 
 .main-home-header {

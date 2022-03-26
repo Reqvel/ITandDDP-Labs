@@ -11,15 +11,18 @@
     display: flex;
     flex-direction: column;
     min-width: 518px;
-    
+    animation-name: appear;
+    animation-duration: 600ms;
 }
 
 .main-sign-in-header {
+    display: flex;
+    align-items: center;
     font-weight: 400;
     font-size: 17.3px;
     letter-spacing: 0.15em;
     color: #FFFFFF;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .input-btn#sign-in-btn {
@@ -41,5 +44,16 @@
 }
 
 .input-btn#sign-up-btn {
-    margin-top: 33px;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    padding: 0;
+    max-height: 33.078px;
+    margin-top: 10px;
+}
+
+.spotify-img {
+    max-height: 30px;
+    object-fit: contain;
+    margin-left: 10px;
 }

@@ -111,6 +111,8 @@ h1, p {
     width: 100%;
     position: absolute;
     background: rgba(34, 34, 34, 0.6);
+    animation-name: appear;
+    animation-duration: 500ms;
 }
 
 .input-field {
@@ -157,4 +159,9 @@ h1, p {
 .input-btn:hover, .input-btn:focus {
     color: black;
     background-color: #FFFFFF;
+}
+
+@keyframes appear {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
