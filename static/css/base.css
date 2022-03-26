@@ -121,7 +121,7 @@ h1, p {
     background: none;
     border: 1px solid #A0A0A0;
     min-height: 42.1px;
-    margin-bottom: 14.7px;
+    margin-bottom: 18px;
     padding: 0 0 0 21.05px;
     transition: border-color 300ms;
 }
@@ -143,6 +143,7 @@ h1, p {
     border-style: solid;
     border-width: 1px;
     border-color: #FFFFFF;
+    padding: 3px 0 3px 0;
     background: none;
     cursor: pointer;
     color: #FFFFFF;
@@ -150,4 +151,10 @@ h1, p {
     font-size: 10px;
     letter-spacing: 0.15em;
     min-height: 33.08px;
+    transition: background-color 300ms, color 300ms;
+}
+
+.input-btn:hover, .input-btn:focus {
+    color: black;
+    background-color: #FFFFFF;
 }

@@ -1,0 +1,45 @@
+.main-sign-in {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-sign-in-form {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    min-width: 518px;
+    
+}
+
+.main-sign-in-header {
+    font-weight: 400;
+    font-size: 17.3px;
+    letter-spacing: 0.15em;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+}
+
+.input-btn#sign-in-btn {
+    margin-top: 12px;
+}
+
+.password-recover {
+    width: fit-content;
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #FFFFFF;
+    margin-top: 19px;
+    transition: color 300ms;
+}
+
+.password-recover:hover, .password-recover:focus {
+    color: #A0A0A0;
+}
+
+.input-btn#sign-up-btn {
+    margin-top: 33px;
+}
