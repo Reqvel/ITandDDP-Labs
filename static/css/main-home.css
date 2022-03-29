@@ -1,11 +1,9 @@
 .main-home {
-    display: flex;
     position: relative;
-    overflow: hidden;
+    white-space: nowrap;
 }
 
 .main-home-section {
-    position: absolute;
     margin-left: 12vw;
     margin-top: 30vh;
     animation-name: appear;
@@ -20,31 +18,29 @@
     line-height: 0.76em;
     text-transform: uppercase;
     text-align: left;
-    color: #FFFFFF;
+    color: var(--white);
 }
 
 .main-home-paragraph {
     font-size: 12px;
-    font-weight: 400;
-    letter-spacing: 0.15em;
     margin-top: 20px;
     margin-bottom: 25px;
     padding-left: 3px;
-    color: #A0A0A0;
+    color: var(--light-gray);
 }
 
 .main-home-button {
+    display: inline-block;
     background-color: none;
-    border: 1px solid #FFFFFF;
+    border: 1px solid var(--white);
     margin-left: 3px;
     padding: 16px 60px 16px 60px;
     font-size: 12px;
-    letter-spacing: 0.15em;
-    color: #FFFFFF;
+    color: var(--white);
     transition: background-color 300ms, color 300ms;
 }
 
 .main-home-button:hover, .main-home-button:focus {
     color: black;
-    background-color: #FFFFFF;
+    background-color: var(--white);
 }
