@@ -9,7 +9,7 @@
 .main-sign-in-form {
     display: flex;
     flex-direction: column;
-    min-width: 518px;
+    width: 518px;
 }
 
 .main-sign-in-header {
@@ -50,4 +50,34 @@
     height: 30px;
     object-fit: contain;
     margin-left: 10px;
+}
+
+@media only screen and (max-width: 710px) {
+    .main-sign-in-form {
+        width: 70vw;
+    }
+    
+    .main-sign-in-header {
+        font-size: 13.3px;
+        margin-bottom: 15px;
+    }
+    
+    .input-button-sign-in {
+        margin-top: 12px;
+    }
+    
+    .input-button-sign-up {
+        height: 28px;
+        margin-top: 7px;
+    }
+    
+    .password-recover {
+        font-size: 9px;
+        margin-top: 15px;
+    }
+    
+    .spotify-img {
+        height: 28px;
+        margin-left: 9px;
+    }
 }

@@ -1,0 +1,120 @@
+.progress-bar {
+    height: 3px;
+    margin: 0px;
+    -webkit-appearance: none;
+}
+  
+/*progress support*/
+.slider-progress {
+    --range: calc(var(--max) - var(--min));
+    --ratio: calc((var(--value) - var(--min)) / var(--range));
+    --sx: calc(0.5 * 13.53px + var(--ratio) * (100% - 13.53px));
+}
+  
+.progress-bar:focus {
+    outline: none;
+}
+  
+/*webkit*/
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13.53px;
+    height: 13.53px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: none;
+    box-shadow: none;
+    margin-top: calc(max((3px - 0px - 0px) * 0.5,0px) - 13.53px * 0.5);
+}
+  
+.progress-bar::-webkit-slider-runnable-track {
+    height: 3px;
+    border: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.31);;
+    box-shadow: none;
+}
+  
+.progress-bar::-webkit-slider-thumb:hover {
+    background: #FFFFFF;
+}
+  
+.slider-progress::-webkit-slider-runnable-track {
+    background: linear-gradient(#FFFFFF,#FFFFFF) 0/var(--sx) 100% no-repeat, rgba(255, 255, 255, 0.31);;
+}
+  
+/*mozilla*/
+.progress-bar::-moz-range-thumb {
+    width: 13.53px;
+    height: 13.53px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: none;
+    box-shadow: none;
+}
+  
+.progress-bar::-moz-range-track {
+    height: max(calc(3px - 0px - 0px),0px);
+    border: 0;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.31);;
+    box-shadow: none;
+}
+  
+.progress-bar::-moz-range-thumb:hover {
+    background: #FFFFFF;
+}
+  
+.slider-progress::-moz-range-track {
+    background: linear-gradient(#FFFFFF,#FFFFFF) 0/var(--sx) 100% no-repeat, rgba(255, 255, 255, 0.31);;
+}
+  
+/*ms*/
+.progress-bar::-ms-fill-upper {
+    background: transparent;
+    border-color: transparent;
+}
+  
+.progress-bar::-ms-fill-lower {
+    background: transparent;
+    border-color: transparent;
+}
+  
+.progress-bar::-ms-thumb {
+    width: 13.53px;
+    height: 13.53px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: none;
+    box-shadow: none;
+    margin-top: 0;
+    box-sizing: border-box;
+}
+  
+.progress-bar::-ms-track {
+    height: 3px;
+    border-radius: 0;
+    background: rgba(255, 255, 255, 0.31);;
+    border: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+  
+.progress-bar::-ms-thumb:hover {
+    background: #FFFFFF;
+}
+  
+.slider-progress::-ms-fill-lower {
+    height: max(calc(3px - 0px - 0px),0px);
+    border-radius: 0px 0 0 0px;
+    margin: -0px 0 -0px -0px;
+    background: #FFFFFF;
+    border: 0;
+    border-right-width: 0;
+} 
+
+@media only screen and (max-width: 1070px) {
+    .progress-bar-volume {
+        width: 9vw;
+    }
+}

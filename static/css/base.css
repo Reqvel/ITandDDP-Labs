@@ -5,6 +5,11 @@
     --font-size-nav: 10px;
     --font-size-logo: 28px;
     --background-filter-color: rgba(34, 34, 34, 0.6);
+    --background-gradient-color-default: linear-gradient(
+        180deg,
+        rgba(108, 108, 108, 0.9) 0%, 
+        rgba(56, 56, 56, 0.83) 17.32%, 
+        #1C1C1C 100%);
 }
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, 
@@ -69,6 +74,11 @@ section, summary, time, mark, audio, video {
 
 .header-ul-right li{
     margin-left: 50px;
+}
+
+.side-meny-counter-block {
+    height: 15px;
+    width: 16px;
 }
 
 .a {
@@ -181,4 +191,46 @@ section, summary, time, mark, audio, video {
 
 .appear-animation-500 {
     animation-duration: 500ms;
+}
+
+@media only screen and (min-width: 710px) {
+    .side-meny-counter-block,
+    .side-menu-icon {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 710px) {
+    .header-ul {
+        display: none; 
+    }
+
+    .header {
+        height: 50.5px;
+        padding: 0 15px;
+        background-color: var(--dark-gray);
+    }
+
+    .logo-text {
+        font-weight: 500;
+        font-size: 20px;
+        letter-spacing: 0.18em;
+        color: var(--white);
+    }
+
+    .input-button {
+        height: 28px;
+        font-size: 9px;
+    }
+
+    .input-field {
+        height: 36.1px;
+        margin-bottom: 14px;
+        padding: 0 0 0 18.05px;
+        font-size: 9px;
+    }
+
+    .input-field::placeholder {
+        font-size: 9px;
+    }
 }

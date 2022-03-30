@@ -1,162 +1,116 @@
-.main-music-player {
-    height: 100%;
-    width: 100%;
-    display: flex;
-}
-
 .gradient-background {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background: linear-gradient(180deg, rgba(108, 108, 108, 0.9) 0%, rgba(56, 56, 56, 0.83) 17.32%, #1C1C1C 100%);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: var(--background-gradient-color-default);
 }
 
-.music-player-bg-filter {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background: rgba(34, 34, 34, 0.6);
+.main-music-player {
+  position: relative;
+  height: 100%;
+  display: flex;
+}
+
+.main-music-player-left-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.track-img {
+  border: 1px solid white;
+  height: 400px;
+  width: 400px;
+  object-fit: cover;
+}
+
+.track-img-compact {
+  height: 43px;
+  width: 43px;
+  margin-left: 10px;
+}
+
+.left-side-song-name {
+  margin: 45px 0 0 0;
+  font-size: 23px;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.song-name-compact {
+  margin: 3px 0 0 6px;
+  font-size: 15px;
+  text-align: left;
+  color: #FFFFFF;
+}
+
+.left-side-artist {
+  margin: 20px 0 0 0;
+  font-size: 15px;
+  text-align: center;
+  color: #A0A0A0;
+}
+
+.artist-compact {
+  margin: 4px 0 0 6px;
+  font-size: 9px;
+  text-align: left;
+  color: #A0A0A0;
+}
+
+.controls-left-track-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-music-player-right-side {
+  position: relative;
+  display: flex;
+  width: 50%;
+}
+
+.content {
+  /* TODO */
+  position: relative;
+  width: 100%;
+}
+
+.side-menu {
+  position: relative;
+  height: 100%;
+  width: 59px;
+  background-color: var(--dark-gray);
+}
+
+.side-menu-icon {
+  display: block;
+  margin: auto;
+  margin-top: 20px;
 }
 
 .footer {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    max-height: 100px;
-    min-height: 100px;
-    background: #1C1C1C;
-}
-
-input[type=range].progress-bar {
-  height: 3px;
-  margin: 0px;
-  -webkit-appearance: none;
-}
-
-/*progress support*/
-input[type=range].progress-bar.slider-progress {
-  --range: calc(var(--max) - var(--min));
-  --ratio: calc((var(--value) - var(--min)) / var(--range));
-  --sx: calc(0.5 * 13.53px + var(--ratio) * (100% - 13.53px));
-}
-
-input[type=range].progress-bar:focus {
-  outline: none;
-}
-
-/*webkit*/
-input[type=range].progress-bar::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 13.53px;
-  height: 13.53px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  border: none;
-  box-shadow: none;
-  margin-top: calc(max((3px - 0px - 0px) * 0.5,0px) - 13.53px * 0.5);
-}
-
-input[type=range].progress-bar::-webkit-slider-runnable-track {
-  height: 3px;
-  border: 0;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.31);;
-  box-shadow: none;
-}
-
-input[type=range].progress-bar::-webkit-slider-thumb:hover {
-  background: #FFFFFF;
-}
-
-input[type=range].progress-bar.slider-progress::-webkit-slider-runnable-track {
-  background: linear-gradient(#FFFFFF,#FFFFFF) 0/var(--sx) 100% no-repeat, rgba(255, 255, 255, 0.31);;
-}
-
-/*mozilla*/
-input[type=range].progress-bar::-moz-range-thumb {
-  width: 13.53px;
-  height: 13.53px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  border: none;
-  box-shadow: none;
-}
-
-input[type=range].progress-bar::-moz-range-track {
-  height: max(calc(3px - 0px - 0px),0px);
-  border: 0;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.31);;
-  box-shadow: none;
-}
-
-input[type=range].progress-bar::-moz-range-thumb:hover {
-  background: #FFFFFF;
-}
-
-input[type=range].progress-bar.slider-progress::-moz-range-track {
-  background: linear-gradient(#FFFFFF,#FFFFFF) 0/var(--sx) 100% no-repeat, rgba(255, 255, 255, 0.31);;
-}
-
-/*ms*/
-input[type=range].progress-bar::-ms-fill-upper {
-  background: transparent;
-  border-color: transparent;
-}
-
-input[type=range].progress-bar::-ms-fill-lower {
-  background: transparent;
-  border-color: transparent;
-}
-
-input[type=range].progress-bar::-ms-thumb {
-  width: 13.53px;
-  height: 13.53px;
-  border-radius: 50%;
-  background: #FFFFFF;
-  border: none;
-  box-shadow: none;
-  margin-top: 0;
-  box-sizing: border-box;
-}
-
-input[type=range].progress-bar::-ms-track {
-  height: 3px;
-  border-radius: 0;
-  background: rgba(255, 255, 255, 0.31);;
-  border: 0;
-  box-shadow: none;
-  box-sizing: border-box;
-}
-
-input[type=range].progress-bar::-ms-thumb:hover {
-  background: #FFFFFF;
-}
-
-input[type=range].progress-bar.slider-progress::-ms-fill-lower {
-  height: max(calc(3px - 0px - 0px),0px);
-  border-radius: 0px 0 0 0px;
-  margin: -0px 0 -0px -0px;
-  background: #FFFFFF;
-  border: 0;
-  border-right-width: 0;
+  position: relative;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  background: var(--dark-gray);
 }
 
 .under-progress-bar {
   height: 100%;
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 .progress-time {
-  cursor: default;
-  font-weight: 400;
-  font-size: 10px;
-  text-align: center;
-  letter-spacing: 0.15em;
-  color: #A0A0A0;
   margin: 15px;
+  font-size: 10px;
+  color: var(--light-gray);
 }
 
 .controls {
@@ -169,30 +123,15 @@ input[type=range].progress-bar.slider-progress::-ms-fill-lower {
 .controls-center, 
 .controls-right {
   display: flex;
-  align-items: center;
-}
-
-.left-side {
-  position: relative;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 50%;
 }
 
-.right-side {
-  position: relative;
-  display: flex;
-  min-width: 50%;
+.controls-left {
+  width: 223px; 
 }
 
-.side-menu {
-  width: 15%; /* TODO */
-  background: #1C1C1C;
-}
-
-.cntrl-btn {
+.controls-button {
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -204,63 +143,125 @@ input[type=range].progress-bar.slider-progress::-ms-fill-lower {
   margin: 0px 30px 0px 30px;
 }
 
-.cntrl-btn#repeat{
+.controls-button-repeat {
   margin-right: 40px;
 }
 
-.cntrl-btn#shuffle{
+.controls-button-shuffle {
   margin-left: 40px;
 }
 
-.track-img {
-  border: 1px solid white;
-  height: 400px;
-  width: 400px;
-  object-fit: cover;
+@media only screen and (min-width: 1070px) {
+  .controls-left {
+    visibility: hidden;
+  }
 }
 
-.left-side-song-name {
-  margin: 45px 0 0 0;
-  cursor: default;
-  font-weight: 400;
-  font-size: 23px;
-  text-align: center;
-  letter-spacing: 0.15em;
-  color: #FFFFFF;
+@media only screen and (max-width: 1070px) {
+  .main-music-player-left-side {
+    display: none;
+  }
+
+  .main-music-player-right-side {
+    width: 100%;
+  }
+
+  .footer {
+    height: 70px;
+  }
+
+  .progress-time-played {
+    display: none;
+  }
+
+  .progress-time-total {
+    width: 3vw;
+  }
+
+  .controls-left,
+  .controls-right {
+    width: 18vw; 
+  }
+
+  .controls-center {
+    width: 50vw;
+  }
+
+  .controls-button {
+    height: 30px;
+    width: 30px;
+    margin: 0px 20px 0px 20px;
+  }
+
+  .progress-time {
+    margin: 13px;
+    font-size: 9px;
+  }
+
+  .side-menu {
+    width: 6vw;
+  }
+  
+  .side-menu-icon {
+    margin-top: 15px;
+  }
 }
 
-.left-side-artist {
-  margin: 20px 0 0 0;
-  cursor: default;
-  font-weight: 400;
-  font-size: 15px;
-  text-align: center;
-  letter-spacing: 0.15em;
-  color: #A0A0A0;
-}
+@media only screen and (max-width: 760px) {
+  .controls-right {
+    display: none;
+  }
 
-.container {
-  /* position: relative; */
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 100%;
-}
+  .controls {
+    justify-content: space-around;
+  }
 
-.side-menu {
-  display: block;
-  align-items: center;
-  height: 100%;
-  width: 59px;
-  background-color: #1C1C1C;
-}
+  .controls-left{
+    width: 30vw; 
+  }
 
-.side-menu-icon {
-  position: relative;
-  display: block;
-  margin: auto;
-  margin-top: 20px;
-}
+  .controls-center {
+    width: 50vw;
+  }
 
-.content {
-  width: 100%;
+  .controls-button-repeat {
+    display: none;
+  }
+  
+  .controls-button-shuffle {
+    display: none;
+  }
+
+  .progress-time-total {
+    width: 5vw;
+  }
+
+  .controls-button {
+    height: 28px;
+    width: 28px;
+    margin: 0px 19px 0px 19px;
+  }
+
+  .side-menu {
+    width: 7vw;
+  }
+
+  .side-menu-icon {
+    width: 15px;
+    height: 14px;
+  }
+
+  .track-img-compact {
+    display: none;
+  }
+  
+  .song-name-compact {
+    margin: 2px 0 0 4px;
+    font-size: 14px;
+  }
+  
+  .artist-compact {
+    margin: 1px 0 0 4px;
+    font-size: 8px;
+  }
 }
