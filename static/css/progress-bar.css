@@ -8,7 +8,7 @@
 .slider-progress {
     --range: calc(var(--max) - var(--min));
     --ratio: calc((var(--value) - var(--min)) / var(--range));
-    --sx: calc(0.5 * 13.53px + var(--ratio) * (100% - 13.53px));
+    --sx: calc(0.5 * 13px + var(--ratio) * (100% - 13px));
 }
   
 .progress-bar:focus {
@@ -18,13 +18,13 @@
 /*webkit*/
 .progress-bar::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 13.53px;
-    height: 13.53px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #FFFFFF;
     border: none;
     box-shadow: none;
-    margin-top: calc(max((3px - 0px - 0px) * 0.5,0px) - 13.53px * 0.5);
+    margin-top: calc(max((3px - 0px - 0px) * 0.5,0px) - 13px * 0.5);
 }
   
 .progress-bar::-webkit-slider-runnable-track {
@@ -45,8 +45,8 @@
   
 /*mozilla*/
 .progress-bar::-moz-range-thumb {
-    width: 13.53px;
-    height: 13.53px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #FFFFFF;
     border: none;
@@ -81,8 +81,8 @@
 }
   
 .progress-bar::-ms-thumb {
-    width: 13.53px;
-    height: 13.53px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     background: #FFFFFF;
     border: none;
@@ -115,6 +115,6 @@
 
 @media only screen and (max-width: 1070px) {
     .progress-bar-volume {
-        width: 9vw;
+        width: 100%;
     }
 }

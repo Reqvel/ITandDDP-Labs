@@ -12,13 +12,7 @@
         #1C1C1C 100%);
 }
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, 
-blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, 
-img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, 
-i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, 
-caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, 
-embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, 
-section, summary, time, mark, audio, video {
+* {
     margin: 0;
     padding: 0;
     border: 0;
@@ -51,7 +45,7 @@ section, summary, time, mark, audio, video {
 
 .header {
     position: relative;
-    height: 70.5px;
+    height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,9 +136,9 @@ section, summary, time, mark, audio, video {
 .input-field {
     background: none;
     border: 1px solid var(--light-gray);
-    height: 42.1px;
+    height: 42px;
     margin-bottom: 18px;
-    padding: 0 0 0 21.05px;
+    padding: 0 0 0 21px;
     font-size: 10px;
     color: var(--light-gray);
     transition: border-color 300ms;
@@ -162,7 +156,7 @@ section, summary, time, mark, audio, video {
 }
 
 .input-button {
-    height: 33.08px;
+    height: 33px;
     background: none;
     border-style: solid;
     border-width: 1px;
@@ -206,7 +200,7 @@ section, summary, time, mark, audio, video {
     }
 
     .header {
-        height: 50.5px;
+        height: 50px;
         padding: 0 15px;
         background-color: var(--dark-gray);
     }
@@ -224,9 +218,9 @@ section, summary, time, mark, audio, video {
     }
 
     .input-field {
-        height: 36.1px;
+        height: 36px;
         margin-bottom: 14px;
-        padding: 0 0 0 18.05px;
+        padding: 0 0 0 18px;
         font-size: 9px;
     }
 

@@ -175,16 +175,16 @@
   }
 
   .progress-time-total {
-    width: 3vw;
+    width: 3%;
   }
 
   .controls-left,
   .controls-right {
-    width: 18vw; 
+    width: 18%; 
   }
 
   .controls-center {
-    width: 50vw;
+    width: 50%;
   }
 
   .controls-button {
@@ -199,7 +199,7 @@
   }
 
   .side-menu {
-    width: 6vw;
+    width: 6%;
   }
   
   .side-menu-icon {
@@ -217,11 +217,11 @@
   }
 
   .controls-left{
-    width: 30vw; 
+    width: 30%; 
   }
 
   .controls-center {
-    width: 50vw;
+    width: 50%;
   }
 
   .controls-button-repeat {
@@ -233,7 +233,7 @@
   }
 
   .progress-time-total {
-    width: 5vw;
+    width: 5%;
   }
 
   .controls-button {
@@ -243,7 +243,7 @@
   }
 
   .side-menu {
-    width: 7vw;
+    width: 7%;
   }
 
   .side-menu-icon {
