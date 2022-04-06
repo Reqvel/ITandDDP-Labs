@@ -1,6 +1,8 @@
 :root {
     --white: #FFFFFF;
+    --off-white: #CCCCCC;
     --dark-gray: #1C1C1C;
+    --lighter-dark-gray: #3C3C3C;
     --light-gray: #A0A0A0;
     --font-size-nav: 10px;
     --font-size-logo: 28px;
