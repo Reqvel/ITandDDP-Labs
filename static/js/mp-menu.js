@@ -37,6 +37,39 @@ function showPlaylists(contentContainer, optContainer, optContainerClassname) {
     setPlaylistListener(playlists)
 }
 
+function setTrackListener() {
+    for(const el of playlists) {
+        el.addEventListener("click", function() {
+            // TODO
+            console.log("Track Click!")
+        })
+    }
+}
+
+function showTracks(contentContainer) {
+    contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
+    const tracksList = document.querySelector('.tracks-list')
+
+    let trackItemsHTML = ''
+
+    for (let i = 30; i > 0; i--) {
+        trackItemsHTML += 
+        `
+        <div class="tracks-list-item cursor-pointer">
+            <img src="#" class="tracks-list-item-img">
+            <div class="tracks-list-item-info">
+                <span class="text tracks-list-item-title">Title ${i}</span>
+                <span class="text tracks-list-item-artist">Artist</span>
+            </div>
+        </div>
+        `
+    }
+
+    tracksList.innerHTML = trackItemsHTML
+    const tracks = document.querySelectorAll(".tracks-list-item")
+    setTrackListener(tracks)
+}
+
 function showSearch(contentContainer, optContainer, optContainerClassname) {
     // TODO
     showEl(optContainer, optContainerClassname)
@@ -58,7 +91,7 @@ function showSearch(contentContainer, optContainer, optContainerClassname) {
         console.log("Search Click!")
     })
 
-    contentContainer.innerHTML = ""
+    showTracks(contentContainer)
 }
 
 function changeInnerText(el, text) {
