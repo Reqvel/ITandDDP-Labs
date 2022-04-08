@@ -11,10 +11,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Blinker:wght@800&display=swap" rel="stylesheet">
 </head>
-<body class="body">
+<body class="body body-flexbox-column">
     <img class="body-background" src="../static/img/home_background_crop_1.jpg">
     <div class="header">
-        <div class="side-meny-counter-block"></div>
+        <div class="side-menu-counter-block"></div>
         <nav>
             <ul class="header-ul header-ul-left">
                 <li>
@@ -36,13 +36,31 @@
                 </li>
             </ul>
         </nav>
-        <svg class="side-menu-icon cursor-pointer" width="16" height="15" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 1H19" stroke="white" stroke-width="2"/>
-            <path d="M0 16.4922L19 16.4922" stroke="white" stroke-width="2"/>
-            <path d="M0 9.05078L19 9.05078" stroke="white" stroke-width="2"/>
-        </svg>    
+        <button class="menu-button menu-button-media cursor-pointer">
+            <svg class="side-menu-icon" width="16" height="15" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 1H19"/>
+                <path d="M0 16.4922L19 16.4922"/>
+                <path d="M0 9.05078L19 9.05078"/>
+            </svg>
+        </button>
     </div>
     <main class="main-home">
+        <div class="side-menu side-menu-hidden">
+            <ul>
+                <li>
+                    <a href="#" class="a text nav-text">About</a>
+                </li>
+                <li>
+                    <a href="#" class="a text nav-text">Support</a>
+                </li>
+                <li>
+                    <a href="../pages/SignIn.html" class="a text nav-text">Sign In</a>
+                </li>
+                <li>
+                    <a href="https://www.spotify.com/us/signup" class="a text nav-text">Sign Up</a>
+                </li>
+            </ul>
+        </div>
         <section class="main-home-section appear-animation">
             <h1 class="main-home-header cursor-default">
                 Music for<br> everyone.
@@ -55,5 +73,7 @@
             </a>
         </section>
     </main>
+    <script type="module" src="../static/js/menu.js"></script>
+    <!-- <script src="../static/js/lol.js"></script> -->
 </body>
 </html>
