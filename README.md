@@ -8,6 +8,8 @@ This project is a music streaming service based on the Spotify API. The user wil
 
 ## Mock up [here.](https://www.figma.com/file/6ipLndmLvQ7ijRfImsfv1r/MYPLAYER?node-id=0%3A1)
 
+## Web Music Player [here.](https://reqvel.github.io/ITandDDP-Labs/pages/Home.html)
+
 ## Main functions
 
 1. Play/pause

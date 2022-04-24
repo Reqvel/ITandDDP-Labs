@@ -1,0 +1,83 @@
+.main-sign-in {
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-sign-in-form {
+    display: flex;
+    flex-direction: column;
+    width: 518px;
+}
+
+.main-sign-in-header {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: var(--white);
+    margin-bottom: 15px;
+}
+
+.input-button-sign-in {
+    margin-top: 12px;
+}
+
+.input-button-sign-up {
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    padding: 0;
+    height: 33px;
+    margin-top: 10px;
+}
+
+.password-recover {
+    width: fit-content;
+    font-size: 10px;
+    margin-top: 19px;
+    color: var(--light-gray);
+    transition: color 300ms;
+}
+
+.password-recover:hover, 
+.password-recover:focus {
+    color: var(--white);;
+}
+
+.spotify-img {
+    height: 30px;
+    object-fit: contain;
+    margin-left: 10px;
+}
+
+@media only screen and (max-width: 710px) {
+    .main-sign-in-form {
+        width: 70%;
+    }
+    
+    .main-sign-in-header {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+    
+    .input-button-sign-in {
+        margin-top: 12px;
+    }
+    
+    .input-button-sign-up {
+        height: 28px;
+        margin-top: 7px;
+    }
+    
+    .password-recover {
+        font-size: 9px;
+        margin-top: 15px;
+    }
+    
+    .spotify-img {
+        height: 28px;
+        margin-left: 9px;
+    }
+}
