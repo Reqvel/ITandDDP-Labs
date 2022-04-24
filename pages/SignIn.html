@@ -14,9 +14,9 @@
 <body class="body">
     <img src="../static/img/home_background_crop_1.jpg" class="body-background">
     <div class="background-filter appear-animation appear-animation-500"></div>
-    <div class="body-flexbox-column">
+    <div class="body-flexbox-column body-flexbox-column-100">
         <div class="header">
-            <div class="side-meny-counter-block"></div>
+            <div class="side-menu-counter-block"></div>
             <nav>
                 <ul class="header-ul header-ul-left">
                     <li>
@@ -38,28 +38,49 @@
                     </li>
                 </ul>
             </nav>
-            <svg class="side-menu-icon cursor-pointer" width="16" height="15" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 1H19" stroke="white" stroke-width="2"/>
-                <path d="M0 16.4922L19 16.4922" stroke="white" stroke-width="2"/>
-                <path d="M0 9.05078L19 9.05078" stroke="white" stroke-width="2"/>
-            </svg>  
+            <button class="menu-button menu-button-media cursor-pointer">
+                <svg class="side-menu-icon" width="16" height="15" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 1H19" stroke="white" stroke-width="2"/>
+                    <path d="M0 16.4922L19 16.4922" stroke="white" stroke-width="2"/>
+                    <path d="M0 9.05078L19 9.05078" stroke="white" stroke-width="2"/>
+                </svg>
+            </button>
         </div>
         <main class="main-sign-in">
-            <form class="main-sign-in-form appear-animation">
-                <h1 class="text main-sign-in-header cursor-default ">
-                    Login with
-                    <img src="../static/img/Spotify_logo_with_text.svg.png" class="spotify-img">
-                </h1>
-                <input class="text input-field" type="email" placeholder="Email">
-                <input class="text input-field" type="password" placeholder="Password">
-                <input type="submit" class="text input-button input-button-sign-in cursor-pointer" value="Sign In">
-                <a href="https://www.spotify.com/us/password-reset/" class="a text password-recover">Forgot your password?</a>
-                <br>
-                <a href="https://www.spotify.com/us/signup" class="a text input-button input-button-sign-up">
-                    Sign Up
-                </a>
-            </form>
+            <div class="side-menu side-menu-hidden">
+                <ul>
+                    <li>
+                        <a href="#" class="a text nav-text">About</a>
+                    </li>
+                    <li>
+                        <a href="#" class="a text nav-text">Support</a>
+                    </li>
+                    <li>
+                        <a href="../pages/SignIn.html" class="a text nav-text">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="https://www.spotify.com/us/signup" class="a text nav-text">Sign Up</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="main-sign-in-flex">
+                <form class="main-sign-in-form appear-animation">
+                    <h1 class="text main-sign-in-header cursor-default ">
+                        Login with
+                        <img src="../static/img/Spotify_logo_with_text.svg.png" class="spotify-img">
+                    </h1>
+                    <input class="text input-field" type="text" placeholder="Client Id" required>
+                    <input class="text input-field" type="password" placeholder="Client Secret" required>
+                    <input type="submit" class="text input-button input-button-sign-in cursor-pointer" value="Sign In">
+                    <a href="https://www.spotify.com/us/password-reset/" class="a text password-recover">Forgot your password?</a>
+                    <br>
+                    <a href="https://www.spotify.com/us/signup" class="a text input-button input-button-sign-up">
+                        Sign Up
+                    </a>
+                </form>
+            </div>
         </main>
     </div>
+    <script type="module" src="../static/js/menu.js"></script>
 </body>
 </html>
