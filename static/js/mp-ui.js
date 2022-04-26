@@ -1,5 +1,5 @@
-import { changeStyle, showEl, hideEl } from "./main.js"
-import { getUsername, getCurrentPlaylists } from "./API.js"
+import { changeStyle, hideEl } from "./main.js"
+import { getUsername, getTracksFromPlaylist } from "./API.js"
 
 
 greetUser()
@@ -67,45 +67,76 @@ export function changeInnerText(el, text) {
 }
 
 
-export function showTracks(contentContainer) {
-  contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
-  const tracksList = document.querySelector('.tracks-list')
+function getArtistsNames(artists) {
+  var names = ''
+  for (const artist of artists) {
+    names += artist.name
+    names += ', '
+  }
+  if(names) {
+    names = names.slice(0, -2);
+  }
+  return names
+}
 
+
+export function showTracks(contentContainer, tracks) {
+  contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
+
+  const tracksList = document.querySelector('.tracks-list')
   let trackItemsHTML = ''
 
-  for (let i = 30; i > 0; i--) {
+  for (let i = 0; i < tracks.length; i++) {
+      let imgSrc = '#'
+      let trackTitle = ''
+      let artistsNames = ''
+      let trackId = ''
+
+      if(tracks[i].track.album.images.length) {
+        imgSrc = tracks[i].track.album.images[0].url;
+      }
+
+      trackTitle = tracks[i].track.name;
+
+      artistsNames = getArtistsNames(tracks[i].track.artists);
+
+      trackId = tracks[i].track.id;
+
       trackItemsHTML += 
       `
-      <div class="tracks-list-item cursor-pointer">
-          <img src="#" class="tracks-list-item-img">
+      <div id="${trackId}"class="tracks-list-item cursor-pointer">
+          <img src="${imgSrc}" class="tracks-list-item-img">
           <div class="tracks-list-item-info">
-              <span class="text tracks-list-item-title">Title ${i}</span>
-              <span class="text tracks-list-item-artist">Artist</span>
+              <span class="text tracks-list-item-title">${trackTitle}</span>
+              <span class="text tracks-list-item-artist">${artistsNames}</span>
           </div>
       </div>
       `
   }
 
   tracksList.innerHTML = trackItemsHTML
-  const tracks = document.querySelectorAll(".tracks-list-item")
-  setTrackListener(tracks)
+  // const tracksItem = document.querySelectorAll(".tracks-list-item")
+  // setTrackListener(tracksItem)
 }
 
 
-function setPlaylistListener(playlists) {
+function setPlaylistListener(contentHeader, contentContainer, playlists) {
   for(const el of playlists) {
-      el.addEventListener("click", function() {
-        // TODO
+      el.addEventListener("click", async function() {
+        const playlistId = el.getAttribute("id");
+        let tracks = await getTracksFromPlaylist(playlistId)
+        const playlistTitle = el.getElementsByClassName("playlist-title")[0].innerHTML;
+        changeInnerText(contentHeader, playlistTitle)
+        showTracks(contentContainer, tracks)
       })
   }
 }
 
 
-export function showPlaylists(contentContainer, optContainer, optContainerClassname, playlistsInfo) {
+export function showPlaylists(contentHeader, contentContainer, optContainer, optContainerClassname, playlistsInfo) {
   hideEl(optContainer, optContainerClassname)
 
   if(playlistsInfo) {
-    console.log(playlistsInfo) // TO DELETE
     contentContainer.innerHTML = '<div class="playlists-grid appear-animation"></div>'
 
     const playlistsGrid = document.querySelector('.playlists-grid')
@@ -113,15 +144,15 @@ export function showPlaylists(contentContainer, optContainer, optContainerClassn
 
     for (let i = 0; i < playlistsInfo.length; i++) {
         let imgSrc = '#'
-        let playlistName = ''
+        let playlistTitle = ''
         let playlistDescription = ''
-        let tracksHref = ''
+        let playlistId = ''
 
         if(playlistsInfo[i].images.length) {
           imgSrc = playlistsInfo[i].images[0].url;
         }
 
-        playlistName = playlistsInfo[i].name;
+        playlistTitle = playlistsInfo[i].name;
 
         if(playlistsInfo[i].description) {
           playlistDescription = playlistsInfo[i].description;
@@ -131,13 +162,13 @@ export function showPlaylists(contentContainer, optContainer, optContainerClassn
           playlistDescription += playlistsInfo[i].owner.display_name;
         }
 
-        tracksHref = playlistsInfo[i].tracks.href;
+        playlistId = playlistsInfo[i].id;
 
         gridItemsHTML += 
         `
-        <div href="${tracksHref}" class="playlists-grid-item cursor-pointer">
+        <div id="${playlistId}" class="playlists-grid-item cursor-pointer">
             <img src="${imgSrc}" class="playlist-img">
-            <span class="text playlist-title">${playlistName}</span>
+            <span class="text playlist-title">${playlistTitle}</span>
             <span class="a text playlist-description">${playlistDescription}</span>
         </div>
           `
@@ -145,7 +176,7 @@ export function showPlaylists(contentContainer, optContainer, optContainerClassn
 
     playlistsGrid.innerHTML = gridItemsHTML
 
-    const playlists = document.querySelectorAll(".playlists-grid-item")
-    setPlaylistListener(playlists)
+    const playlistsItem = document.querySelectorAll(".playlists-grid-item")
+    setPlaylistListener(contentHeader, contentContainer, playlistsItem)
   }
 }

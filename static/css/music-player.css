@@ -313,7 +313,7 @@
 }
 
 .tracks-list-item-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 80px;
   width: 80px;
   margin: 10px;

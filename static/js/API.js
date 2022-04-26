@@ -78,11 +78,7 @@ export async function getCurrentPlaylists() {
     const userInfo = await getUserInfo();
     if(userInfo) {
         const storedAccessToken = localStorage.getItem(accessTokenKey);
-        const userId = userInfo.id
-        // var url = 'https://api.spotify.com/v1/users/';
-        //     url += userId;
-        //     url += '/playlists';
-        var url = 'https://api.spotify.com/v1/me/playlists' // TODO
+        var url = 'https://api.spotify.com/v1/me/playlists'
         const options = {
             headers: {
                 'Authorization': 'Bearer ' + storedAccessToken
@@ -95,5 +91,26 @@ export async function getCurrentPlaylists() {
             return json.items
         }
     }
+    return null;
+}
+
+
+export async function getTracksFromPlaylist(id) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+        var url = 'https://api.spotify.com/v1/playlists/';
+            url += id;
+            url += '/tracks';
+        const options = {
+            headers: {
+                'Authorization': 'Bearer ' + storedAccessToken
+            }
+        }   
+
+        const response = await fetch(url, options);
+        if (response.ok) {
+            const json = await response.json();
+            console.log(json) // TO DELETE
+            return json.items
+        }
     return null;
 }

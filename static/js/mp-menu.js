@@ -6,16 +6,6 @@ import { changeInnerText, showPlaylists, showTracks } from "./mp-ui.js"
 setEventListeners()
 
 
-function setTrackListener() {
-    for(const el of playlists) {
-        el.addEventListener("click", function() {
-            // TODO
-            console.log("Track Click!")
-        })
-    }
-}
-
-
 function showSearch(contentContainer, optContainer, optContainerClassname) {
     // TODO
     showEl(optContainer, optContainerClassname)
@@ -37,7 +27,7 @@ function showSearch(contentContainer, optContainer, optContainerClassname) {
         console.log("Search Click!")
     })
 
-    showTracks(contentContainer)
+    // showTracks(contentContainer)
 }
 
 
@@ -67,7 +57,7 @@ function setEventListeners() {
 
         changeInnerText(contentHeader, headerText)
         closeMenu(menuBtn)
-        showPlaylists(contentContainer, contentContainerOpt, "content-container-opt-hidden", playlistsInfo)
+        showPlaylists(contentHeader, contentContainer, contentContainerOpt, "content-container-opt-hidden", playlistsInfo)
         // TODO
     })
 
