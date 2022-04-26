@@ -255,7 +255,7 @@
 }
 
 .playlist-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 170px;
   width: 170px;
   object-fit: cover;
@@ -263,12 +263,19 @@
 
 .playlist-title {
   width: 170px;
+  margin-top: 5px;
   font-size: 15px;
   color: var(--white);
 }
 
 .playlist-description {
   width: 170px;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--light-gray);
+}
+
+.playlist-description a {
   font-size: 10px;
   color: var(--light-gray);
 }
