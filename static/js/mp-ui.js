@@ -1,5 +1,5 @@
 import { changeStyle, hideEl } from "./main.js"
-import { getUsername, getTracksFromPlaylist, startResumePlayback, pausePlayback, accessTokenKey } from "./API.js"
+import { getUsername, getTracksFromPlaylist, pausePlayback, accessTokenKey } from "./API.js"
 
 
 greetUser()
@@ -8,42 +8,42 @@ setEventListeners()
 
 
 function setEventListeners() {
-  window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = localStorage.getItem(accessTokenKey);
-    const player = new Spotify.Player({
-        name: 'Web Playback SDK Quick Start Player',
-        getOAuthToken: cb => { cb(token); },
-        volume: 0.5
-    });
+//   window.onSpotifyWebPlaybackSDKReady = () => {
+//     const token = localStorage.getItem(accessTokenKey);
+//     const player = new Spotify.Player({
+//         name: 'Web Playback SDK Quick Start Player',
+//         getOAuthToken: cb => { cb(token); },
+//         volume: 0.5
+//     });
 
-    // Ready
-    player.addListener('ready', ({ device_id }) => {
-        console.log('Ready with Device ID', device_id);
-    });
+//     // Ready
+//     player.addListener('ready', ({ device_id }) => {
+//         console.log('Ready with Device ID', device_id);
+//     });
 
-    // Not Ready
-    player.addListener('not_ready', ({ device_id }) => {
-        console.log('Device ID has gone offline', device_id);
-    });
+//     // Not Ready
+//     player.addListener('not_ready', ({ device_id }) => {
+//         console.log('Device ID has gone offline', device_id);
+//     });
 
-    player.addListener('initialization_error', ({ message }) => {
-        console.error(message);
-    });
+//     player.addListener('initialization_error', ({ message }) => {
+//         console.error(message);
+//     });
 
-    player.addListener('authentication_error', ({ message }) => {
-        console.error(message);
-    });
+//     player.addListener('authentication_error', ({ message }) => {
+//         console.error(message);
+//     });
 
-    player.addListener('account_error', ({ message }) => {
-        console.error(message);
-    });
+//     player.addListener('account_error', ({ message }) => {
+//         console.error(message);
+//     });
 
-    document.querySelector(".controls-button-play-pause").onclick = function() {
-      player.togglePlay();
-    };
+//     document.querySelector(".controls-button-play-pause").onclick = function() {
+//       player.togglePlay();
+//     };
 
-    player.connect();
-}
+//     player.connect();
+// }
 
 
 
@@ -63,11 +63,11 @@ function setEventListeners() {
     // TODO
   })
 
-  // playPauseBtn.addEventListener("click", function() {
+  playPauseBtn.addEventListener("click", function() {
 
-  //   // pausePlayback();
+    pausePlayback();
     
-  // })
+  })
 
   skipNextBtn.addEventListener("click", function() {
     // TODO
