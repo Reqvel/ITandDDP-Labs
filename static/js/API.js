@@ -28,7 +28,7 @@ export function getHashParams() {
 
 export function loginUser() {
     const clientId = 'c08f78ac1d1c44d687025fe762044f88';
-    const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/MusicPlayer.html'; // TO CHANGE
+    const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/SignIn.html'; // TO CHANGE
     // const redirectUri = 'http://127.0.0.1:5500/pages/SignIn.html'; // TO CHANGE
 
     const state = generateRandomString(16);
