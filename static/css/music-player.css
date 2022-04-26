@@ -22,7 +22,7 @@
 }
 
 .track-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 400px;
   width: 400px;
   object-fit: cover;

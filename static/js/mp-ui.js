@@ -1,5 +1,5 @@
 import { changeStyle, hideEl } from "./main.js"
-import { getUsername, getTracksFromPlaylist } from "./API.js"
+import { getUsername, getTracksFromPlaylist, startResumePlayback, pausePlayback, accessTokenKey } from "./API.js"
 
 
 greetUser()
@@ -8,6 +8,45 @@ setEventListeners()
 
 
 function setEventListeners() {
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const token = localStorage.getItem(accessTokenKey);
+    const player = new Spotify.Player({
+        name: 'Web Playback SDK Quick Start Player',
+        getOAuthToken: cb => { cb(token); },
+        volume: 0.5
+    });
+
+    // Ready
+    player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+    });
+
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+    });
+
+    player.addListener('initialization_error', ({ message }) => {
+        console.error(message);
+    });
+
+    player.addListener('authentication_error', ({ message }) => {
+        console.error(message);
+    });
+
+    player.addListener('account_error', ({ message }) => {
+        console.error(message);
+    });
+
+    document.querySelector(".controls-button-play-pause").onclick = function() {
+      player.togglePlay();
+    };
+
+    player.connect();
+}
+
+
+
   const repeatBtn = document.querySelector(".controls-button-repeat")
   const skipPrevBtn = document.querySelector(".controls-button-prev")
   const playPauseBtn = document.querySelector(".controls-button-play-pause")
@@ -24,9 +63,11 @@ function setEventListeners() {
     // TODO
   })
 
-  playPauseBtn.addEventListener("click", function() {
-    // TODO
-  })
+  // playPauseBtn.addEventListener("click", function() {
+
+  //   // pausePlayback();
+    
+  // })
 
   skipNextBtn.addEventListener("click", function() {
     // TODO
@@ -80,6 +121,23 @@ function getArtistsNames(artists) {
 }
 
 
+function setTrackListener(tracksItem) {
+  const trackImg = document.querySelector(".track-img");
+  const trackTitle = document.querySelector(".left-side-song-name");
+  const trackArtists = document.querySelector(".left-side-artist");
+
+  for (const el of tracksItem) {
+    el.addEventListener("click", function() {
+      trackImg.src = el.getElementsByClassName("tracks-list-item-img")[0].getAttribute("src");
+      trackTitle.innerHTML = el.getElementsByClassName("tracks-list-item-title")[0].innerHTML;
+      trackArtists.innerHTML = el.getElementsByClassName("tracks-list-item-artist")[0].innerHTML;
+
+      // startResumePlayback(el.getAttribute("id"));
+    })
+  }
+}
+
+
 export function showTracks(contentContainer, tracks) {
   contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
 
@@ -115,8 +173,8 @@ export function showTracks(contentContainer, tracks) {
   }
 
   tracksList.innerHTML = trackItemsHTML
-  // const tracksItem = document.querySelectorAll(".tracks-list-item")
-  // setTrackListener(tracksItem)
+  const tracksItem = document.querySelectorAll(".tracks-list-item")
+  setTrackListener(tracksItem)
 }
 
 
