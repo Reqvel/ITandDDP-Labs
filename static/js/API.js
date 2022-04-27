@@ -28,16 +28,19 @@ export function getHashParams() {
 
 export function loginUser() {
     const clientId = 'c08f78ac1d1c44d687025fe762044f88';
-    const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/SignIn.html'; // FOR DEPLOY
-    // const redirectUri = 'http://127.0.0.1:5500/pages/SignIn.html'; // TO CHANGE
+    // const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/SignIn.html'; // FOR DEPLOY
+    const redirectUri = 'http://127.0.0.1:5500/pages/SignIn.html'; // TO CHANGE
 
     const state = generateRandomString(16);
     localStorage.setItem(stateKey, state);
 
     var scope = 'user-read-private '; // TO CHANGE
-        scope += 'playlist-read-private ';
+        scope += 'user-read-email ';
+        scope += 'user-library-modify ';
+        scope += 'user-library-read ';
         scope += 'user-modify-playback-state ';
-        scope += 'streaming';
+        scope += 'playlist-read-private ';
+        scope += 'streaming ';
 
     var url = 'https://accounts.spotify.com/authorize';
         url += '?response_type=token';
@@ -61,8 +64,9 @@ async function getUserInfo() {
         }   
 
         const response = await fetch(url, options);
+        const json = await response.json();
         if (response.ok) {
-            return await response.json();
+            return json;
         }
     }
     return null;
@@ -119,43 +123,195 @@ export async function getTracksFromPlaylist(id) {
 }
 
 
-export async function startResumePlayback(id) {
+export async function getPlaybackState() {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
-        var url = 'https://api.spotify.com/v1/me/player/play';
-        const options = {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + storedAccessToken,
-                'Content-Type': 'application/json'
-            },
-            body: {
-                'context_uri': 'spotify:track:' + id,
-                'position_ms': 0
-            }
-        }   
+    var url = 'https://api.spotify.com/v1/me/player';
+    const options = {
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        },
+    }   
 
-        const response = await fetch(url, options);
-        console.log(response) // TO DELETE
-        if (response.ok) {
-            console.log('Playback started!') // TO DELETE
-        }
+    const response = await fetch(url, options);
+    if (response.ok) {
+        const json = await response.json();
+        console.log('getPlaybackState ', json) // TO DELETE
+        return json;
+    }
+    return null;
+}
+
+
+export async function startResumePlayback(trackUri, progressMs=0, contextUri="") {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/play';
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        },
+        body:  JSON.stringify({
+            "context_uri": contextUri,
+            "position_ms": progressMs,
+            "offset": {
+                "uri": trackUri
+            }
+        })
+    }
+    console.log(options) // TO DELETE
+
+    const response = await fetch(url, options);
+    const json = await response.json();
+        console.log('startResumePlayback ', json) // TO DELETE
+    if (response.ok) {
+        console.log('Playback started!') // TO DELETE
+    }
 }
 
 
 export async function pausePlayback() {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
-        var url = 'https://api.spotify.com/v1/me/player/pause';
-        const options = {
-            method: 'PUT',
-            headers: {
-                'Authorization': 'Bearer ' + storedAccessToken,
-                'Content-Type': 'application/json'
-            }
-        }   
-
-        const response = await fetch(url, options);
-        console.log(response) // TO DELETE
-        if (response.ok) {
-            console.log('Playback paused!') // TO DELETE
+    var url = 'https://api.spotify.com/v1/me/player/pause';
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
         }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Playback paused!') // TO DELETE
+    }
+}
+
+
+export async function skipToNext() {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/next';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Skiped to next!') // TO DELETE
+    }
+}
+
+
+export async function skipToPrevious() {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/previous';
+    const options = {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Skiped to previous!') // TO DELETE
+    }
+}
+
+
+export async function setRepeatMode(state) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/repeat?state=' + state;
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Repeat mode: ' + state) // TO DELETE
+    }
+}
+
+
+export async function togglePlaybackShuffle(state) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/shuffle?state=' + state;
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Shuffle: ' + state) // TO DELETE
+    }
+}
+
+
+export async function checkUsersSavedTracks(ids) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/tracks/contains?ids=' + ids.join(',');
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        const resArr = await response.json();
+        return resArr;
+    }
+    return null;
+}
+
+
+export async function saveTracks(ids) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Track saved!') // TO DELETE
+    }
+}
+
+
+export async function removeTracks(ids) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
+    const options = {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Track deleted!') // TO DELETE
+    }
 }

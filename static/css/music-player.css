@@ -35,6 +35,9 @@
 }
 
 .left-side-song-name {
+  width: 70%;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 45px 0 0 0;
   font-size: 23px;
   text-align: center;
@@ -49,6 +52,9 @@
 }
 
 .left-side-artist {
+  width: 60%;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 20px 0 0 0;
   font-size: 15px;
   text-align: center;
@@ -63,6 +69,9 @@
 }
 
 .controls-left-track-info {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -167,11 +176,13 @@
 
 .controls-button-play-pause path {
   stroke: var(--off-white);
+  fill: var(--off-white);
   transition: 300ms;
 }
 
 .controls-button-play-pause:hover path {
   stroke: var(--white);
+  fill: var(--white);
 }
 
 .menu-button-mp {
@@ -262,6 +273,8 @@
 }
 
 .playlist-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 170px;
   margin-top: 5px;
   font-size: 15px;
@@ -269,6 +282,8 @@
 }
 
 .playlist-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 170px;
   margin-top: 4px;
   font-size: 10px;
@@ -321,6 +336,10 @@
 }
 
 .tracks-list-item-info {
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;

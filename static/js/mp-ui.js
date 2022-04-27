@@ -1,52 +1,26 @@
 import { changeStyle, hideEl } from "./main.js"
-import { getUsername, getTracksFromPlaylist, pausePlayback, accessTokenKey } from "./API.js"
+import { getUsername, 
+         getTracksFromPlaylist, 
+         pausePlayback, 
+         startResumePlayback,
+         getPlaybackState,
+         skipToNext,
+         skipToPrevious,
+         setRepeatMode,
+         togglePlaybackShuffle,
+         checkUsersSavedTracks,
+         saveTracks,
+         removeTracks,
+         accessTokenKey } from "./API.js"
 
 
-greetUser()
-setProgressSliders()
-setEventListeners()
+greetUser();
+showPlayIcon();
+setProgressSliders();
+setEventListeners();
 
 
 function setEventListeners() {
-//   window.onSpotifyWebPlaybackSDKReady = () => {
-//     const token = localStorage.getItem(accessTokenKey);
-//     const player = new Spotify.Player({
-//         name: 'Web Playback SDK Quick Start Player',
-//         getOAuthToken: cb => { cb(token); },
-//         volume: 0.5
-//     });
-
-//     // Ready
-//     player.addListener('ready', ({ device_id }) => {
-//         console.log('Ready with Device ID', device_id);
-//     });
-
-//     // Not Ready
-//     player.addListener('not_ready', ({ device_id }) => {
-//         console.log('Device ID has gone offline', device_id);
-//     });
-
-//     player.addListener('initialization_error', ({ message }) => {
-//         console.error(message);
-//     });
-
-//     player.addListener('authentication_error', ({ message }) => {
-//         console.error(message);
-//     });
-
-//     player.addListener('account_error', ({ message }) => {
-//         console.error(message);
-//     });
-
-//     document.querySelector(".controls-button-play-pause").onclick = function() {
-//       player.togglePlay();
-//     };
-
-//     player.connect();
-// }
-
-
-
   const repeatBtn = document.querySelector(".controls-button-repeat")
   const skipPrevBtn = document.querySelector(".controls-button-prev")
   const playPauseBtn = document.querySelector(".controls-button-play-pause")
@@ -55,32 +29,205 @@ function setEventListeners() {
   const favBtn = document.querySelector(".controls-button-fav")
 
   repeatBtn.addEventListener("click", function() {
-    changeStyle(repeatBtn, "controls-button-selected")
-    // TODO
+    toggleRepeat();
   })
 
   skipPrevBtn.addEventListener("click", function() {
-    // TODO
+    skipToPrevious();
   })
 
   playPauseBtn.addEventListener("click", function() {
-
-    pausePlayback();
-    
+    togglePlayPause();
   })
 
-  skipNextBtn.addEventListener("click", function() {
-    // TODO
+  skipNextBtn.addEventListener("click", async function() {
+    skipToNext();
   })
 
   shuffleBtn.addEventListener("click", function() {
-    changeStyle(shuffleBtn, "controls-button-selected")
-    // TODO
+    toggleShuffle();
   })
   
   favBtn.addEventListener("click", function() {
-    // TODO
+    toggleSaved();
   })
+
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    const token = localStorage.getItem(accessTokenKey);
+    const player = new Spotify.Player({
+        name: 'Spotifee Web Player',
+        getOAuthToken: callback => { callback(token); },
+        volume: 0.2
+    });
+
+    // Ready
+    player.addListener('ready', ({ device_id }) => {
+        console.log('Ready with Device ID', device_id);
+    });
+
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+        console.log('Device ID has gone offline', device_id);
+    });
+
+    player.addListener('initialization_error', ({ message }) => {
+        console.error('initialization_error', message);
+    });
+
+    player.addListener('authentication_error', ({ message }) => {
+        console.error('authentication_error', message);
+    });
+
+    player.addListener('account_error', ({ message }) => {
+        console.error('account_error', message);
+    });
+
+    player.addListener('player_state_changed', (res) => {
+      console.log(res)
+      showTrackInfo(
+      res.track_window.current_track.album.images[0].url,
+      res.track_window.current_track.name,
+      getArtistsNames(res.track_window.current_track.artists))
+      updatePlayPauseBtn(res.paused);
+      updateShuffleBtn(res.shuffle);
+      updateRepeatBtn(res.repeat_mode);
+      updateFavBtn();
+      
+    });
+
+    player.connect();
+}
+}
+
+
+async function toggleSaved() {
+  const playbackState = await getPlaybackState();
+  if(playbackState) {
+    const id = playbackState.item.id;
+    const resArr = await checkUsersSavedTracks([id]);
+    if(resArr) {
+      const isSaved = resArr[0];
+      if(isSaved){
+        removeTracks([id]);
+      }
+      else{
+        saveTracks([id]);
+      updateFavBtn();
+      }
+    }
+  }
+}
+
+
+async function toggleShuffle() {
+  const playbackState = await getPlaybackState();
+  if(playbackState) {
+    const shuffleState = playbackState.shuffle_state;
+    togglePlaybackShuffle(!shuffleState);
+  }
+}
+
+
+async function toggleRepeat() {
+  const playbackState = await getPlaybackState();
+  if(playbackState) {
+    const offRepeatState = "off";
+    const trackRepeatState = "track";
+    const contextRepeatState = "context";
+    const repeatState = playbackState.repeat_state;
+    if (repeatState == offRepeatState) {
+      setRepeatMode(trackRepeatState);
+    }
+    else if (repeatState == trackRepeatState || repeatState == contextRepeatState) {
+      setRepeatMode(offRepeatState);
+    }
+  }
+}
+
+
+function showPlayIcon() {
+  const playPauseBtn = document.querySelector(".controls-button-play-pause")
+  const pauseIcon = playPauseBtn.querySelector(".pause-icon")
+  const playIcon = playPauseBtn.querySelector(".play-icon")
+  pauseIcon.style.display = 'none';
+  playIcon.style.display = '';
+}
+
+
+function showPauseIcon() {
+  const playPauseBtn = document.querySelector(".controls-button-play-pause")
+  const pauseIcon = playPauseBtn.querySelector(".pause-icon")
+  const playIcon = playPauseBtn.querySelector(".play-icon")
+  pauseIcon.style.display = '';
+  playIcon.style.display = 'none';
+}
+
+
+async function updateFavBtn() {
+  const favBtn = document.querySelector(".controls-button-fav")
+  const playbackState = await getPlaybackState();
+  if(playbackState) {
+    const id = playbackState.item.id;
+    const resArr = await checkUsersSavedTracks([id]);
+    if(resArr) {
+      const isSaved = resArr[0];
+      if(isSaved){
+        changeStyle(favBtn, "controls-button-selected", true);
+      }
+      else{
+        changeStyle(favBtn, "controls-button-selected", false);
+      }
+    }
+  }
+}
+
+
+async function updateRepeatBtn(repeatMode) {
+  const repeatBtn = document.querySelector(".controls-button-repeat")
+  if (repeatMode == 0) {
+    changeStyle(repeatBtn, "controls-button-selected", false);
+  }
+  else if (repeatMode == 1 ||repeatMode == 2) {
+    changeStyle(repeatBtn, "controls-button-selected", true);
+  }
+}
+
+
+function updatePlayPauseBtn(paused) {
+  if(paused) {
+    showPlayIcon();
+  }
+  else {
+    showPauseIcon();
+  }
+}
+
+
+function updateShuffleBtn(shuffle) {
+  const shuffleBtn = document.querySelector(".controls-button-shuffle")
+  if(shuffle) {
+    changeStyle(shuffleBtn, "controls-button-selected", true);
+  }
+  else {
+    changeStyle(shuffleBtn, "controls-button-selected", false);
+  }
+}
+
+
+async function togglePlayPause() {
+  const state = await getPlaybackState();
+  if (!state) {
+    showPlayIcon();
+  }
+  else {
+    if (state.is_playing) {
+      pausePlayback()
+    }
+    else {
+      const contextUri = state.context ? state.context.uri : "";
+      startResumePlayback(state.item.uri, state.progress_ms, contextUri);
+    }
+  }
 }
 
 
@@ -121,24 +268,39 @@ function getArtistsNames(artists) {
 }
 
 
-function setTrackListener(tracksItem) {
+function showTrackInfo(img, title, artists) {
   const trackImg = document.querySelector(".track-img");
+  const trackImgCompact = document.querySelector(".track-img-compact");
   const trackTitle = document.querySelector(".left-side-song-name");
+  const trackTitleCompact = document.querySelector(".song-name-compact");
   const trackArtists = document.querySelector(".left-side-artist");
+  const trackArtistsCompact = document.querySelector(".artist-compact");
+  trackImg.src = img;
+  trackImgCompact.src = img;
+  trackTitle.innerHTML = title;
+  trackTitleCompact.innerHTML = title;
+  trackArtists.innerHTML = artists;
+  trackArtistsCompact.innerHTML = artists;
+}
 
+
+function setTrackListener(tracksItem, playlistId="") {
   for (const el of tracksItem) {
     el.addEventListener("click", function() {
-      trackImg.src = el.getElementsByClassName("tracks-list-item-img")[0].getAttribute("src");
-      trackTitle.innerHTML = el.getElementsByClassName("tracks-list-item-title")[0].innerHTML;
-      trackArtists.innerHTML = el.getElementsByClassName("tracks-list-item-artist")[0].innerHTML;
+      showTrackInfo(
+        el.getElementsByClassName("tracks-list-item-img")[0].getAttribute("src"),
+        el.getElementsByClassName("tracks-list-item-title")[0].innerHTML,
+        el.getElementsByClassName("tracks-list-item-artist")[0].innerHTML
+      )
 
-      // startResumePlayback(el.getAttribute("id"));
+      startResumePlayback('spotify:track:' + el.getAttribute("id"), 0,
+                          'spotify:playlist:' + playlistId);
     })
   }
 }
 
 
-export function showTracks(contentContainer, tracks) {
+export function showTracks(contentContainer, tracks, playlistId="") {
   contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
 
   const tracksList = document.querySelector('.tracks-list')
@@ -174,7 +336,7 @@ export function showTracks(contentContainer, tracks) {
 
   tracksList.innerHTML = trackItemsHTML
   const tracksItem = document.querySelectorAll(".tracks-list-item")
-  setTrackListener(tracksItem)
+  setTrackListener(tracksItem, playlistId)
 }
 
 
@@ -185,7 +347,7 @@ function setPlaylistListener(contentHeader, contentContainer, playlists) {
         let tracks = await getTracksFromPlaylist(playlistId)
         const playlistTitle = el.getElementsByClassName("playlist-title")[0].innerHTML;
         changeInnerText(contentHeader, playlistTitle)
-        showTracks(contentContainer, tracks)
+        showTracks(contentContainer, tracks, playlistId)
       })
   }
 }

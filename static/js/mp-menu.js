@@ -57,7 +57,11 @@ function setEventListeners() {
 
         changeInnerText(contentHeader, headerText)
         closeMenu(menuBtn)
-        showPlaylists(contentHeader, contentContainer, contentContainerOpt, "content-container-opt-hidden", playlistsInfo)
+        showPlaylists(contentHeader, 
+                      contentContainer,
+                      contentContainerOpt,
+                      "content-container-opt-hidden",
+                      playlistsInfo)
         // TODO
     })
 
