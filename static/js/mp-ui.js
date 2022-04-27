@@ -11,6 +11,7 @@ import { getUsername,
          checkUsersSavedTracks,
          saveTracks,
          removeTracks,
+         setPlaybackVolume,
          accessTokenKey } from "./API.js"
 
 
@@ -27,6 +28,7 @@ function setEventListeners() {
   const skipNextBtn = document.querySelector(".controls-button-next")
   const shuffleBtn = document.querySelector(".controls-button-shuffle")
   const favBtn = document.querySelector(".controls-button-fav")
+  const volumeSlider = document.querySelector(".progress-bar-volume")
 
   repeatBtn.addEventListener("click", function() {
     toggleRepeat();
@@ -50,6 +52,10 @@ function setEventListeners() {
   
   favBtn.addEventListener("click", function() {
     toggleSaved();
+  })
+
+  volumeSlider.addEventListener("mouseup", function() {
+    setPlaybackVolume(volumeSlider.value);
   })
 
   window.onSpotifyWebPlaybackSDKReady = () => {

@@ -315,3 +315,21 @@ export async function removeTracks(ids) {
         console.log('Track deleted!') // TO DELETE
     }
 }
+
+
+export async function setPlaybackVolume(volumePercent) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volumePercent
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Volume set to: ' + volumePercent) // TO DELETE
+    }
+}
