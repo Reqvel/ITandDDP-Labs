@@ -1,4 +1,4 @@
-import { changeStyle, hideEl } from "./main.js"
+import { changeStyle, hideEl, msToMinSec } from "./main.js"
 import { getUsername, 
          getTracksFromPlaylist, 
          pausePlayback, 
@@ -18,6 +18,7 @@ import { getUsername,
 
 var STATE_PAUSED = true;
 var STATE_POSITION = 0;
+var STATE_DURATION = 0;
 var IS_MOUSE_DOWN_PB = false;
 const STEP = 1000;
 
@@ -27,7 +28,7 @@ greetUser();
 showPlayIcon();
 setProgressSliders();
 setEventListeners();
-setInterval(updateProgressBarPlayback, STEP);
+setInterval(updatePlaybackProgress, STEP);
 
 
 function setEventListeners() {
@@ -118,11 +119,13 @@ function setEventListeners() {
       updateRepeatBtn(state.repeat_mode);
       updateFavBtn();
       updateVolumeSlider();
-      updateProgressBarMax(state.track_window.current_track.duration_ms);
 
-      // For updateProgressBarPlayback
+      // For updatePlaybackProgress
       STATE_PAUSED = state.paused
       STATE_POSITION = state.position
+      STATE_DURATION = state.track_window.current_track.duration_ms
+
+      updateProgressBarMax();
     });
 
     player.connect();
@@ -193,17 +196,26 @@ function showPauseIcon() {
 }
 
 
-function updateProgressBarMax(duration) {
+function updateProgressBarMax() {
   const progressBarPlayback = document.querySelector(".progress-bar-playback");
-  progressBarPlayback.max = duration
-  progressBarPlayback.style.setProperty('--max', duration);
+  progressBarPlayback.max = STATE_DURATION
+  progressBarPlayback.style.setProperty('--max', STATE_DURATION);
 }
 
 
-function updateProgressBarPlayback() {
+function updateTime(timePlayedItem, timeLeftItem, timePlayedMs, timeTotalMs) {
+  timePlayedItem.innerHTML = msToMinSec(timePlayedMs)
+  timeLeftItem.innerHTML = "-" + msToMinSec(timeTotalMs - timePlayedMs)
+}
+
+
+function updatePlaybackProgress() {
   const progressBarPlayback = document.querySelector(".progress-bar-playback");
-  const maxVal =  progressBarPlayback.max;
-  STATE_POSITION += (STATE_PAUSED || (STATE_POSITION >= maxVal)) ? 0 : STEP;
+  const timePlayedItem = document.querySelector(".progress-time-played");
+  const timeLeftItem = document.querySelector(".progress-time-left");
+  updateTime(timePlayedItem, timeLeftItem, STATE_POSITION, STATE_DURATION)
+
+  STATE_POSITION += (STATE_PAUSED || (STATE_POSITION >= STATE_DURATION)) ? 0 : STEP;
   if(!IS_MOUSE_DOWN_PB) {
     progressBarPlayback.value = STATE_POSITION;
     progressBarPlayback.style.setProperty('--value', STATE_POSITION);
