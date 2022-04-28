@@ -12,13 +12,22 @@ import { getUsername,
          saveTracks,
          removeTracks,
          setPlaybackVolume,
+         seekToPosition,
          accessTokenKey } from "./API.js"
+
+
+var STATE_PAUSED = true;
+var STATE_POSITION = 0;
+var IS_MOUSE_DOWN_PB = false;
+const STEP = 1000;
+
 
 
 greetUser();
 showPlayIcon();
 setProgressSliders();
 setEventListeners();
+setInterval(updateProgressBarPlayback, STEP);
 
 
 function setEventListeners() {
@@ -29,6 +38,7 @@ function setEventListeners() {
   const shuffleBtn = document.querySelector(".controls-button-shuffle")
   const favBtn = document.querySelector(".controls-button-fav")
   const volumeSlider = document.querySelector(".progress-bar-volume")
+  const progressBarPlayback = document.querySelector(".progress-bar-playback");
 
   repeatBtn.addEventListener("click", function() {
     toggleRepeat();
@@ -56,6 +66,15 @@ function setEventListeners() {
 
   volumeSlider.addEventListener("mouseup", function() {
     setPlaybackVolume(volumeSlider.value);
+  })
+
+  progressBarPlayback.addEventListener("mousedown", function() {
+    IS_MOUSE_DOWN_PB = true
+  })
+
+  progressBarPlayback.addEventListener("mouseup", function() {
+    IS_MOUSE_DOWN_PB = false
+    seekToPosition(progressBarPlayback.value)
   })
 
   window.onSpotifyWebPlaybackSDKReady = () => {
@@ -88,18 +107,22 @@ function setEventListeners() {
         console.error('account_error', message);
     });
 
-    player.addListener('player_state_changed', (res) => {
-      console.log(res)
+    player.addListener('player_state_changed', (state) => {
+      console.log(state)
       showTrackInfo(
-      res.track_window.current_track.album.images[0].url,
-      res.track_window.current_track.name,
-      getArtistsNames(res.track_window.current_track.artists))
-      updatePlayPauseBtn(res.paused);
-      updateShuffleBtn(res.shuffle);
-      updateRepeatBtn(res.repeat_mode);
+      state.track_window.current_track.album.images[0].url,
+      state.track_window.current_track.name,
+      getArtistsNames(state.track_window.current_track.artists))
+      updatePlayPauseBtn(state.paused);
+      updateShuffleBtn(state.shuffle);
+      updateRepeatBtn(state.repeat_mode);
       updateFavBtn();
       updateVolumeSlider();
-      
+      updateProgressBarMax(state.track_window.current_track.duration_ms);
+
+      // For updateProgressBarPlayback
+      STATE_PAUSED = state.paused
+      STATE_POSITION = state.position
     });
 
     player.connect();
@@ -167,6 +190,24 @@ function showPauseIcon() {
   const playIcon = playPauseBtn.querySelector(".play-icon")
   pauseIcon.style.display = '';
   playIcon.style.display = 'none';
+}
+
+
+function updateProgressBarMax(duration) {
+  const progressBarPlayback = document.querySelector(".progress-bar-playback");
+  progressBarPlayback.max = duration
+  progressBarPlayback.style.setProperty('--max', duration);
+}
+
+
+function updateProgressBarPlayback() {
+  const progressBarPlayback = document.querySelector(".progress-bar-playback");
+  const maxVal =  progressBarPlayback.max;
+  STATE_POSITION += (STATE_PAUSED || (STATE_POSITION >= maxVal)) ? 0 : STEP;
+  if(!IS_MOUSE_DOWN_PB) {
+    progressBarPlayback.value = STATE_POSITION;
+    progressBarPlayback.style.setProperty('--value', STATE_POSITION);
+  }
 }
 
 

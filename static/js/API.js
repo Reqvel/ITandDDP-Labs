@@ -333,3 +333,21 @@ export async function setPlaybackVolume(volumePercent) {
         console.log('Volume set to: ' + volumePercent) // TO DELETE
     }
 }
+
+
+export async function seekToPosition(positionMs) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + positionMs
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        console.log('Seek to: ' + positionMs) // TO DELETE
+    }
+}
