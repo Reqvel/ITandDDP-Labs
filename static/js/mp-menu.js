@@ -47,6 +47,6 @@ function setEventListeners() {
 
     signOutBtn.addEventListener("click", function() {
         closeMenu(menuBtn)
-        localStorage.removeItem(accessTokenKey)
+        localStorage.clear()
     })
 }
