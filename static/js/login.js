@@ -1,8 +1,8 @@
 import { loginUser, getHashParams, stateKey } from "./API.js"
 import { accessTokenKey } from "./API.js"
 
-// const redirectUrl = 'https://reqvel.github.io/ITandDDP-Labs/pages/MusicPlayer.html' // FOR DEPLOY
-const redirectUrl = 'http://127.0.0.1:5500/pages/MusicPlayer.html' // TO CHANGE
+const redirectUrl = 'https://reqvel.github.io/ITandDDP-Labs/pages/MusicPlayer.html' // FOR DEPLOY
+// const redirectUrl = 'http://127.0.0.1:5500/pages/MusicPlayer.html' // FOR DEV
 
 validateLogin();
 

@@ -4,6 +4,7 @@ import { getUsername,
          pausePlayback, 
          startResumePlayback,
          getPlaybackState,
+         getCurrentPlaylists,
          skipToNext,
          skipToPrevious,
          setRepeatMode,
@@ -14,7 +15,12 @@ import { getUsername,
          setPlaybackVolume,
          seekToPosition,
          searchForTracks,
-         accessTokenKey } from "./API.js"
+         accessTokenKey,
+         nextItemsUrlKey,
+         nextItemsTypeKey,
+         itemTypeTrack,
+         itemTypePlaylists,
+        itemTypePlaylistItems } from "./API.js"
 
 
 var STATE_PAUSED = true;
@@ -42,6 +48,8 @@ function setEventListeners() {
   const volumeSlider = document.querySelector(".progress-bar-volume")
   const progressBarPlayback = document.querySelector(".progress-bar-playback");
   const contentContainer = document.querySelector(".content-container");
+  const contentHeader = document.querySelector(".content-header")
+  const contentContainerOpt = document.querySelector(".content-container-opt")
 
   repeatBtn.addEventListener("click", function() {
     toggleRepeat();
@@ -80,12 +88,41 @@ function setEventListeners() {
     seekToPosition(progressBarPlayback.value)
   })
 
-  contentContainer.addEventListener('scroll', function(event)
-  {
+  contentContainer.addEventListener('scroll', async function(event) {
     var element = event.target;
     if (element.scrollHeight - element.scrollTop === element.clientHeight)
     {
-        console.log('scrolled');
+        var nextItemsUrl = localStorage.getItem(nextItemsUrlKey)
+        if(nextItemsUrl != "null") {
+          var res = null
+          var nextItemsType = localStorage.getItem(nextItemsTypeKey)
+
+          switch (nextItemsType) {
+            case itemTypeTrack:
+              res = await searchForTracks("", nextItemsUrl)
+              localStorage.setItem(nextItemsUrlKey, res[1])
+              localStorage.setItem(nextItemsTypeKey, res[2])
+              showTracks(contentContainer, res[0], '',true)
+              break;
+            case itemTypePlaylists:
+              res = await getCurrentPlaylists(nextItemsUrl);
+              localStorage.setItem(nextItemsUrlKey, res[1])
+              localStorage.setItem(nextItemsTypeKey, res[2])
+              showPlaylists(contentHeader, 
+                            contentContainer,
+                            contentContainerOpt,
+                            "content-container-opt-hidden",
+                            res[0],
+                            true)
+              break;
+            case itemTypePlaylistItems:
+              res = await getTracksFromPlaylist('', nextItemsUrl)
+              localStorage.setItem(nextItemsUrlKey, res[1])
+              localStorage.setItem(nextItemsTypeKey, res[2])
+              showTracks(contentContainer, res[0], res[3], true)
+              break;
+          }
+        }
     }
   });
 
@@ -120,23 +157,23 @@ function setEventListeners() {
     });
 
     player.addListener('player_state_changed', (state) => {
-      console.log(state)
-      showTrackInfo(
-      state.track_window.current_track.album.images[0].url,
-      state.track_window.current_track.name,
-      getArtistsNames(state.track_window.current_track.artists))
-      updatePlayPauseBtn(state.paused);
-      updateShuffleBtn(state.shuffle);
-      updateRepeatBtn(state.repeat_mode);
-      updateFavBtn();
-      updateVolumeSlider();
+      if(state) {
+        showTrackInfo(state.track_window.current_track.album.images[0].url,
+          state.track_window.current_track.name,
+          getArtistsNames(state.track_window.current_track.artists))
+        updatePlayPauseBtn(state.paused);
+        updateShuffleBtn(state.shuffle);
+        updateRepeatBtn(state.repeat_mode);
+        updateFavBtn();
+        updateVolumeSlider();
 
-      // For updatePlaybackProgress
-      STATE_PAUSED = state.paused
-      STATE_POSITION = state.position
-      STATE_DURATION = state.track_window.current_track.duration_ms
+        // For updatePlaybackProgress
+        STATE_PAUSED = state.paused
+        STATE_POSITION = state.position
+        STATE_DURATION = state.track_window.current_track.duration_ms
 
-      updateProgressBarMax();
+        updateProgressBarMax();
+      }
     });
 
     player.connect();
@@ -375,15 +412,17 @@ function setTrackListener(tracksItem, playlistId="") {
         el.getElementsByClassName("tracks-list-item-artist")[0].innerHTML
       )
 
-      startResumePlayback('spotify:track:' + el.getAttribute("id"), 0,
-                          'spotify:playlist:' + playlistId);
+      var contextUri = ""
+      if(playlistId) contextUri = 'spotify:playlist:' + playlistId
+
+      startResumePlayback('spotify:track:' + el.getAttribute("id"), 0, contextUri);
     })
   }
 }
 
 
-export function showTracks(contentContainer, tracks, playlistId="") {
-  contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
+export function showTracks(contentContainer, tracks, playlistId="", isAdding=false) {
+  if (!isAdding) contentContainer.innerHTML = '<div class="tracks-list appear-animation"></div>'
 
   const tracksList = document.querySelector('.tracks-list')
   let trackItemsHTML = ''
@@ -434,7 +473,7 @@ export function showTracks(contentContainer, tracks, playlistId="") {
       `
   }
 
-  tracksList.innerHTML = trackItemsHTML
+  tracksList.innerHTML += trackItemsHTML
   const tracksItem = document.querySelectorAll(".tracks-list-item")
   setTrackListener(tracksItem, playlistId)
 }
@@ -444,20 +483,24 @@ function setPlaylistListener(contentHeader, contentContainer, playlists) {
   for(const el of playlists) {
       el.addEventListener("click", async function() {
         const playlistId = el.getAttribute("id");
-        let tracks = await getTracksFromPlaylist(playlistId)
+        let res = await getTracksFromPlaylist(playlistId)
+        localStorage.setItem(nextItemsUrlKey, res[1])
+        localStorage.setItem(nextItemsTypeKey, res[2])
         const playlistTitle = el.getElementsByClassName("playlist-title")[0].innerHTML;
         changeInnerText(contentHeader, playlistTitle)
-        showTracks(contentContainer, tracks, playlistId)
+        showTracks(contentContainer, res[0], playlistId)
       })
   }
 }
 
 
-export function showPlaylists(contentHeader, contentContainer, optContainer, optContainerClassName, playlistsInfo) {
+export function showPlaylists(contentHeader, contentContainer,
+                              optContainer, optContainerClassName, 
+                              playlistsInfo, isAdding=false) {
   hideEl(optContainer, optContainerClassName)
 
   if(playlistsInfo) {
-    contentContainer.innerHTML = '<div class="playlists-grid appear-animation"></div>'
+    if (!isAdding) contentContainer.innerHTML = '<div class="playlists-grid appear-animation"></div>'
 
     const playlistsGrid = document.querySelector('.playlists-grid')
     let gridItemsHTML = ''
@@ -494,8 +537,7 @@ export function showPlaylists(contentHeader, contentContainer, optContainer, opt
           `
     }
 
-    playlistsGrid.innerHTML = gridItemsHTML
-
+    playlistsGrid.innerHTML += gridItemsHTML
     const playlistsItem = document.querySelectorAll(".playlists-grid-item")
     setPlaylistListener(contentHeader, contentContainer, playlistsItem)
   }
@@ -503,7 +545,6 @@ export function showPlaylists(contentHeader, contentContainer, optContainer, opt
 
 
 export function showSearch(contentContainer, optContainer, optContainerClassName) {
-  // TODO
   showEl(optContainer, optContainerClassName)
   contentContainer.innerHTML = "";
   optContainer.innerHTML = 
@@ -520,7 +561,9 @@ export function showSearch(contentContainer, optContainer, optContainerClassName
   const searchBtn = document.querySelector(".input-button-pm-search")
 
   searchBtn.addEventListener("click", async function() {
-    const tracks = await searchForTracks(searchField.value)
-    showTracks(contentContainer, tracks)
+    const res = await searchForTracks(searchField.value)
+    localStorage.setItem(nextItemsUrlKey, res[1])
+    localStorage.setItem(nextItemsTypeKey, res[2])
+    showTracks(contentContainer, res[0])
   })
 }

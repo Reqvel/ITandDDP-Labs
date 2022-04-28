@@ -1,5 +1,10 @@
 export const stateKey = 'spotify_auth_state';
 export const accessTokenKey = 'spotify_access_token';
+export const nextItemsUrlKey = 'spotify_next_items_url';
+export const nextItemsTypeKey = 'spotify_next_items_type';
+export const itemTypeTrack = 'track';
+export const itemTypePlaylists = 'playlists';
+export const itemTypePlaylistItems = 'playlist items';
 
 
 function generateRandomString(length) {
@@ -28,13 +33,13 @@ export function getHashParams() {
 
 export function loginUser() {
     const clientId = 'c08f78ac1d1c44d687025fe762044f88';
-    // const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/SignIn.html'; // FOR DEPLOY
-    const redirectUri = 'http://127.0.0.1:5500/pages/SignIn.html'; // TO CHANGE
+    const redirectUri = 'https://reqvel.github.io/ITandDDP-Labs/pages/SignIn.html'; // FOR DEPLOY
+    // const redirectUri = 'http://127.0.0.1:5500/pages/SignIn.html'; // FOR DEV
 
     const state = generateRandomString(16);
     localStorage.setItem(stateKey, state);
 
-    var scope = 'user-read-private '; // TO CHANGE
+    var scope = 'user-read-private ';
         scope += 'user-read-email ';
         scope += 'user-library-modify ';
         scope += 'user-library-read ';
@@ -82,32 +87,27 @@ export async function getUsername() {
 }
 
 
-export async function getCurrentPlaylists() {
-    const userInfo = await getUserInfo();
-    if(userInfo) {
-        const storedAccessToken = localStorage.getItem(accessTokenKey);
-        var url = 'https://api.spotify.com/v1/me/playlists'
-        const options = {
-            headers: {
-                'Authorization': 'Bearer ' + storedAccessToken
-            }
-        }   
-
-        const response = await fetch(url, options);
-        if (response.ok) {
-            const json = await response.json();
-            return json.items
+export async function getCurrentPlaylists(nextUrl="") {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/me/playlists'
+    const options = {
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken
         }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        const res = await response.json();
+        return [res.items, res.next, itemTypePlaylists]
     }
     return null;
 }
 
 
-export async function getTracksFromPlaylist(id) {
+export async function getTracksFromPlaylist(id, nextUrl="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
-        var url = 'https://api.spotify.com/v1/playlists/';
-            url += id;
-            url += '/tracks';
+        var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/playlists/' + id + '/tracks';
         const options = {
             headers: {
                 'Authorization': 'Bearer ' + storedAccessToken
@@ -116,8 +116,12 @@ export async function getTracksFromPlaylist(id) {
 
         const response = await fetch(url, options);
         if (response.ok) {
-            const json = await response.json();
-            return json.items
+            const res = await response.json();
+            var playlistId = res.href.substring(
+                res.href.indexOf("playlists/") + "playlists/".length, 
+                res.href.indexOf("/tracks")
+            );
+            return [res.items, res.next, itemTypePlaylistItems, playlistId]
         }
     return null;
 }
@@ -136,7 +140,6 @@ export async function getPlaybackState() {
     const response = await fetch(url, options);
     if (response.ok) {
         const json = await response.json();
-        console.log('getPlaybackState ', json) // TO DELETE
         return json;
     }
     return null;
@@ -146,28 +149,22 @@ export async function getPlaybackState() {
 export async function startResumePlayback(trackUri, progressMs=0, contextUri="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
     var url = 'https://api.spotify.com/v1/me/player/play';
+    var bodyOpt = { "position_ms": progressMs }
+    if(contextUri) {
+        bodyOpt["context_uri"] = contextUri 
+        bodyOpt["offset"] = { "uri": trackUri }
+    } 
+    else bodyOpt["uris"] = [trackUri]
     const options = {
         method: 'PUT',
         headers: {
             'Authorization': 'Bearer ' + storedAccessToken,
             'Content-Type': 'application/json'
         },
-        body:  JSON.stringify({
-            "context_uri": contextUri,
-            "position_ms": progressMs,
-            "offset": {
-                "uri": trackUri
-            }
-        })
+        body:  JSON.stringify(bodyOpt)
     }
-    console.log(options) // TO DELETE
 
     const response = await fetch(url, options);
-    const json = await response.json();
-        console.log('startResumePlayback ', json) // TO DELETE
-    if (response.ok) {
-        console.log('Playback started!') // TO DELETE
-    }
 }
 
 
@@ -183,9 +180,6 @@ export async function pausePlayback() {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Playback paused!') // TO DELETE
-    }
 }
 
 
@@ -201,9 +195,6 @@ export async function skipToNext() {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Skiped to next!') // TO DELETE
-    }
 }
 
 
@@ -219,9 +210,6 @@ export async function skipToPrevious() {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Skiped to previous!') // TO DELETE
-    }
 }
 
 
@@ -237,9 +225,6 @@ export async function setRepeatMode(state) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Repeat mode: ' + state) // TO DELETE
-    }
 }
 
 
@@ -255,9 +240,6 @@ export async function togglePlaybackShuffle(state) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Shuffle: ' + state) // TO DELETE
-    }
 }
 
 
@@ -293,9 +275,6 @@ export async function saveTracks(ids) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Track saved!') // TO DELETE
-    }
 }
 
 
@@ -311,9 +290,6 @@ export async function removeTracks(ids) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Track deleted!') // TO DELETE
-    }
 }
 
 
@@ -329,9 +305,6 @@ export async function setPlaybackVolume(volumePercent) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Volume set to: ' + volumePercent) // TO DELETE
-    }
 }
 
 
@@ -347,17 +320,20 @@ export async function seekToPosition(positionMs) {
     }   
 
     const response = await fetch(url, options);
-    if (response.ok) {
-        console.log('Seek to: ' + positionMs) // TO DELETE
-    }
 }
 
 
-export async function searchForTracks(searchStr) {
+export async function searchForTracks(searchStr, nextUrl="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = "https://api.spotify.com/v1/search?q="
+    var url = ""
+    if(!nextUrl) {
+        url = "https://api.spotify.com/v1/search?q="
         url += searchStr
-        url += "&type=track"
+        url += "&type=" + itemTypeTrack
+    }
+    else {
+        url = nextUrl
+    }
     const options = {
         method: 'GET',
         headers: {
@@ -369,8 +345,7 @@ export async function searchForTracks(searchStr) {
     const response = await fetch(url, options);
     if (response.ok) {
         const res = await response.json();
-        console.log('searchForTracks', res) // TO DELETE
-        return res.tracks.items
+        return [res.tracks.items, res.tracks.next, itemTypeTrack]
     }
     return null
 }

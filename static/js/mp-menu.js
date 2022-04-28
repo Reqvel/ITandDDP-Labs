@@ -1,5 +1,5 @@
-import { accessTokenKey, getUsername, getCurrentPlaylists } from "./API.js"
 import { changeInnerText, showPlaylists, showSearch } from "./mp-ui.js"
+import { accessTokenKey, getUsername, getCurrentPlaylists, nextItemsUrlKey, nextItemsTypeKey } from "./API.js"
 
 
 setEventListeners()
@@ -22,12 +22,13 @@ function setEventListeners() {
 
     accountBtn.addEventListener("click", function() {
         closeMenu(menuBtn)
-        // TODO
     })
 
     playlistsBtn.addEventListener("click", async function() {
         const headerText = await getUsername() + "'s " + playlistsBtn.innerText;
-        const playlistsInfo = await getCurrentPlaylists();
+        const res = await getCurrentPlaylists();
+        localStorage.setItem(nextItemsUrlKey, res[1])
+        localStorage.setItem(nextItemsTypeKey, res[2])
 
         changeInnerText(contentHeader, headerText)
         closeMenu(menuBtn)
@@ -35,15 +36,13 @@ function setEventListeners() {
                       contentContainer,
                       contentContainerOpt,
                       "content-container-opt-hidden",
-                      playlistsInfo)
-        // TODO
+                      res[0])
     })
 
     searchBtn.addEventListener("click", function() {
         changeInnerText(contentHeader, searchBtn.innerText)
         closeMenu(menuBtn)
         showSearch(contentContainer, contentContainerOpt, "content-container-opt-hidden")
-        // TODO
     })
 
     signOutBtn.addEventListener("click", function() {
