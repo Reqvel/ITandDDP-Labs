@@ -394,12 +394,22 @@ function showTrackInfo(img, title, artists) {
   const trackTitleCompact = document.querySelector(".song-name-compact");
   const trackArtists = document.querySelector(".left-side-artist");
   const trackArtistsCompact = document.querySelector(".artist-compact");
+  const gradientBackground = document.querySelector(".gradient-background");
   trackImg.src = img;
   trackImgCompact.src = img;
   trackTitle.innerHTML = title;
   trackTitleCompact.innerHTML = title;
   trackArtists.innerHTML = artists;
   trackArtistsCompact.innerHTML = artists;
+
+  var colors = getBgColors(img)
+  if(colors.length){
+    var newBackground = 'linear-gradient(180deg,'
+        newBackground += colors[0] + ' 0%,'
+        newBackground += colors[1] + ' 25%,'
+        newBackground += '#1C1C1C 100%)'
+        gradientBackground.style.background = newBackground
+  }
 }
 
 
@@ -566,4 +576,22 @@ export function showSearch(contentContainer, optContainer, optContainerClassName
     localStorage.setItem(nextItemsTypeKey, res[2])
     showTracks(contentContainer, res[0])
   })
+}
+
+
+function getBgColors(imgsrc) {
+  var img = new Image();
+  img.crossOrigin = "Anonymous";
+  img.src = imgsrc
+  const context = document.createElement("canvas").getContext("2d");
+  context.drawImage(img, 0, 0, 1, 1);
+  const i = context.getImageData(0, 0, 1, 1).data;
+
+  const midColor = `rgba(${i[0]},${i[1]},${i[2]},${i[3]})`
+  const colorChange = function(c,n,i,d){for(i=3;i--;c[i]=d<0?0:d>255?255:d|0)d=c[i]+n;return c}
+  const j = colorChange([i[0], i[1], i[2]], 15)
+  const topColor = `rgba(${j[0]},${j[1]},${j[2]},${i[3]})`
+  
+  if(midColor == 'rgba(0,0,0,0)') return []
+  else return [topColor, midColor]
 }

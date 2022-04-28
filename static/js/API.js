@@ -69,6 +69,7 @@ async function getUserInfo() {
         }   
 
         const response = await fetch(url, options);
+        if(response.status == 401) alert("Please sign out and login again")
         const json = await response.json();
         if (response.ok) {
             return json;
@@ -165,6 +166,7 @@ export async function startResumePlayback(trackUri, progressMs=0, contextUri="")
     }
 
     const response = await fetch(url, options);
+    if(response.status == 404) alert("Please connect to the Spotifee Web Player using Spotify Web Player or Spotify App")
 }
 
 
