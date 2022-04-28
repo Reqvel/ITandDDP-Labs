@@ -98,6 +98,7 @@ function setEventListeners() {
       updateShuffleBtn(res.shuffle);
       updateRepeatBtn(res.repeat_mode);
       updateFavBtn();
+      updateVolumeSlider();
       
     });
 
@@ -166,6 +167,17 @@ function showPauseIcon() {
   const playIcon = playPauseBtn.querySelector(".play-icon")
   pauseIcon.style.display = '';
   playIcon.style.display = 'none';
+}
+
+
+async function updateVolumeSlider() {
+  const volumeSlider = document.querySelector(".progress-bar-volume");
+  const playbackState = await getPlaybackState();
+  if(playbackState) {
+    const volume = playbackState.device.volume_percent;
+    volumeSlider.value = volume;
+    volumeSlider.style.setProperty('--value', volume);
+  }
 }
 
 
