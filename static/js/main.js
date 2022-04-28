@@ -34,6 +34,6 @@ export function msToMinSec(s) {
     var secs = s % 60;
     s = (s - secs) / 60;
     var mins = s % 60;
-    var minSec = secs >= 10 ? (mins + ':' + secs) : (mins + ':0' + secs );
+    var minSec = secs > 9 ? (mins + ':' + secs) : (mins + ':0' + secs );
     return minSec
   }
