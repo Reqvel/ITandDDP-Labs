@@ -1,34 +1,8 @@
-import { showEl, hideEl } from "./main.js"
 import { accessTokenKey, getUsername, getCurrentPlaylists } from "./API.js"
-import { changeInnerText, showPlaylists, showTracks } from "./mp-ui.js"
+import { changeInnerText, showPlaylists, showSearch } from "./mp-ui.js"
 
 
 setEventListeners()
-
-
-function showSearch(contentContainer, optContainer, optContainerClassname) {
-    // TODO
-    showEl(optContainer, optContainerClassname)
-    optContainer.innerHTML = 
-    `
-    <div class="search-container appear-animation">
-        <input class="text input-field input-field-mp-search " type="text" placeholder="Track Name..." required>
-        <button class="text input-button input-button-pm-search">
-            Search
-        </button>
-    </div>
-    `
-
-    const searchField = document.querySelector(".input-field-mp-search")
-    const searchBtn = document.querySelector(".input-button-pm-search")
-
-    searchBtn.addEventListener("click", function() {
-        // TODO
-        console.log("Search Click!")
-    })
-
-    // showTracks(contentContainer)
-}
 
 
 function closeMenu(el) {

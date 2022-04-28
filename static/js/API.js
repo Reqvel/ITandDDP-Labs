@@ -351,3 +351,26 @@ export async function seekToPosition(positionMs) {
         console.log('Seek to: ' + positionMs) // TO DELETE
     }
 }
+
+
+export async function searchForTracks(searchStr) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = "https://api.spotify.com/v1/search?q="
+        url += searchStr
+        url += "&type=track"
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        const res = await response.json();
+        console.log('searchForTracks', res) // TO DELETE
+        return res.tracks.items
+    }
+    return null
+}

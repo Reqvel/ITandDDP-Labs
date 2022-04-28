@@ -1,4 +1,4 @@
-import { changeStyle, hideEl, msToMinSec } from "./main.js"
+import { changeStyle, hideEl, showEl, msToMinSec } from "./main.js"
 import { getUsername, 
          getTracksFromPlaylist, 
          pausePlayback, 
@@ -13,6 +13,7 @@ import { getUsername,
          removeTracks,
          setPlaybackVolume,
          seekToPosition,
+         searchForTracks,
          accessTokenKey } from "./API.js"
 
 
@@ -40,6 +41,7 @@ function setEventListeners() {
   const favBtn = document.querySelector(".controls-button-fav")
   const volumeSlider = document.querySelector(".progress-bar-volume")
   const progressBarPlayback = document.querySelector(".progress-bar-playback");
+  const contentContainer = document.querySelector(".content-container");
 
   repeatBtn.addEventListener("click", function() {
     toggleRepeat();
@@ -77,6 +79,15 @@ function setEventListeners() {
     IS_MOUSE_DOWN_PB = false
     seekToPosition(progressBarPlayback.value)
   })
+
+  contentContainer.addEventListener('scroll', function(event)
+  {
+    var element = event.target;
+    if (element.scrollHeight - element.scrollTop === element.clientHeight)
+    {
+        console.log('scrolled');
+    }
+  });
 
   window.onSpotifyWebPlaybackSDKReady = () => {
     const token = localStorage.getItem(accessTokenKey);
@@ -383,15 +394,33 @@ export function showTracks(contentContainer, tracks, playlistId="") {
       let artistsNames = ''
       let trackId = ''
 
-      if(tracks[i].track.album.images.length) {
+      if(tracks[i].track && tracks[i].track.album.images.length) {
         imgSrc = tracks[i].track.album.images[0].url;
       }
+      else if(tracks[i].album && tracks[i].album.images.length) {
+        imgSrc = tracks[i].album.images[0].url;
+      }
 
-      trackTitle = tracks[i].track.name;
+      if(tracks[i].track) {
+        trackTitle = tracks[i].track.name;
+      }
+      else if(tracks[i].name) {
+        trackTitle = tracks[i].name;
+      }
 
-      artistsNames = getArtistsNames(tracks[i].track.artists);
+      if(tracks[i].track) {
+        artistsNames = getArtistsNames(tracks[i].track.artists);
+      }
+      else if(tracks[i].artists) {
+        artistsNames = getArtistsNames(tracks[i].artists);
+      }
 
-      trackId = tracks[i].track.id;
+      if(tracks[i].track) {
+        trackId = tracks[i].track.id;
+      }
+      else if(tracks[i].id){
+        trackId = tracks[i].id;
+      }
 
       trackItemsHTML += 
       `
@@ -424,8 +453,8 @@ function setPlaylistListener(contentHeader, contentContainer, playlists) {
 }
 
 
-export function showPlaylists(contentHeader, contentContainer, optContainer, optContainerClassname, playlistsInfo) {
-  hideEl(optContainer, optContainerClassname)
+export function showPlaylists(contentHeader, contentContainer, optContainer, optContainerClassName, playlistsInfo) {
+  hideEl(optContainer, optContainerClassName)
 
   if(playlistsInfo) {
     contentContainer.innerHTML = '<div class="playlists-grid appear-animation"></div>'
@@ -470,4 +499,28 @@ export function showPlaylists(contentHeader, contentContainer, optContainer, opt
     const playlistsItem = document.querySelectorAll(".playlists-grid-item")
     setPlaylistListener(contentHeader, contentContainer, playlistsItem)
   }
+}
+
+
+export function showSearch(contentContainer, optContainer, optContainerClassName) {
+  // TODO
+  showEl(optContainer, optContainerClassName)
+  contentContainer.innerHTML = "";
+  optContainer.innerHTML = 
+  `
+  <div class="search-container appear-animation">
+      <input class="text input-field input-field-mp-search " type="text" placeholder="Track Name..." required>
+      <button class="text input-button input-button-pm-search">
+          Search
+      </button>
+  </div>
+  `
+
+  const searchField = document.querySelector(".input-field-mp-search")
+  const searchBtn = document.querySelector(".input-button-pm-search")
+
+  searchBtn.addEventListener("click", async function() {
+    const tracks = await searchForTracks(searchField.value)
+    showTracks(contentContainer, tracks)
+  })
 }

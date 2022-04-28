@@ -86,7 +86,7 @@
 
 .footer {
   position: relative;
-  height: 100px;
+  height: 85px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
