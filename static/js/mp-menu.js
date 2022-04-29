@@ -1,5 +1,5 @@
 import { changeInnerText, showPlaylists, showSearch } from "./mp-ui.js"
-import { accessTokenKey, getUsername, getCurrentPlaylists, nextItemsUrlKey, nextItemsTypeKey } from "./API.js"
+import { getUsername, getCurrentPlaylists, nextItemsUrlKey, nextItemsTypeKey } from "./API.js"
 
 
 setEventListeners()
@@ -40,6 +40,8 @@ function setEventListeners() {
     })
 
     searchBtn.addEventListener("click", function() {
+        localStorage.removeItem(nextItemsUrlKey)
+        localStorage.removeItem(nextItemsTypeKey)
         changeInnerText(contentHeader, searchBtn.innerText)
         closeMenu(menuBtn)
         showSearch(contentContainer, contentContainerOpt, "content-container-opt-hidden")
