@@ -261,9 +261,9 @@ function updatePlaybackProgress() {
   const progressBarPlayback = document.querySelector(".progress-bar-playback");
   const timePlayedItem = document.querySelector(".progress-time-played");
   const timeLeftItem = document.querySelector(".progress-time-left");
-  updateTime(timePlayedItem, timeLeftItem, STATE_POSITION, STATE_DURATION)
-
+  
   STATE_POSITION += (STATE_PAUSED || (STATE_POSITION >= STATE_DURATION)) ? 0 : STEP;
+  updateTime(timePlayedItem, timeLeftItem, STATE_POSITION, STATE_DURATION)
   if(!IS_MOUSE_DOWN_PB) {
     progressBarPlayback.value = STATE_POSITION;
     progressBarPlayback.style.setProperty('--value', STATE_POSITION);
