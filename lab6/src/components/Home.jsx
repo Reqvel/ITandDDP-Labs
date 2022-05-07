@@ -1,11 +1,9 @@
 import '../css/main-home.css'
-import SideNav from './SideNav';
 import { Link } from "react-router-dom"
 
 const Home = () => {
     return (
         <main className="main-home">
-            <SideNav />
             <section className="main-home-section appear-animation">
                 <h1 className="main-home-header cursor-default">
                     Music for<br/> everyone.

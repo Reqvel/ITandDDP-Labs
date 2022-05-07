@@ -5,7 +5,6 @@ import SideNav from './SideNav';
 const SignIn = () => {
     return (
         <main class="main-sign-in">
-            <SideNav />
             <div class="main-sign-in-flex">
                 <div class="main-sign-in-div appear-animation">
                     <h1 class="text main-sign-in-header cursor-default ">
