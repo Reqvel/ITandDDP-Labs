@@ -1,5 +1,6 @@
 import '../css/base.css'
 import { ReactComponent as MenuIcon } from '../svgs/MenuIcon.svg'
+import { Link } from "react-router-dom"
 
 const Header = () => {
   return (
@@ -8,18 +9,18 @@ const Header = () => {
       <nav>
           <ul className="header-ul header-ul-left">
               <li>
-                  <button className="menu-button text nav-text cursor-pointer">About</button>
+                  <a className="text nav-text cursor-pointer">About</a>
               </li>
               <li>
-                  <button className="menu-button text nav-text cursor-pointer">Support</button>
+                  <a className="text nav-text cursor-pointer">Support</a>
               </li>
           </ul>
       </nav>
-      <button className="menu-button text logo-text cursor-pointer">Spotifee</button>
+      <Link to="/" className="a text logo-text cursor-pointer">Spotifee</Link>
       <nav>
           <ul className="header-ul header-ul-right">
               <li>
-                  <button className="menu-button text nav-text cursor-pointer">Sign In</button>
+                  <Link to="SignIn" className="a text nav-text cursor-pointer">Sign In</Link>
               </li>
               <li>
                   <a href="https://www.spotify.com/us/signup" className="a text nav-text">Sign Up</a>

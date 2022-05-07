@@ -100,8 +100,7 @@
     transition: color 300ms;
 }
 
-.nav-text:hover, 
-.nav-text:focus {
+.nav-text:hover {
     color: var(--white);
 }
 
@@ -117,8 +116,7 @@
     transition: opacity 300ms, transform 300ms;
 }
 
-.nav-text:hover::after,
-.nav-text:focus::after {
+.nav-text:hover::after {
     background-color: var(--white);
     opacity: 1;
     transform: translate3d(0, 0.2em, 0);

@@ -1,17 +1,18 @@
-import Header from "./components/Header"
-import BackgroundMain from "./components/BackgroundMain"
-import MainHome from "./components/Mainhome"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import SignInPage from "./pages/SignInPage";
 
 
 const App = () => {
   return (
-    <div className="body body-flexbox-column">
-    {/* <> */}
-      <BackgroundMain />
-      <Header />
-      <MainHome />
-    {/* </> */}
-    </div>
+    <BrowserRouter>
+      <div className="body">
+        <Routes>
+          <Route path="/" element={ <HomePage />} />
+          <Route path="/SignIn" element={ <SignInPage /> } />
+        </Routes>
+      </div>
+    </BrowserRouter>
   )
 }
 
