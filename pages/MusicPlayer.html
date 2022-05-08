@@ -19,6 +19,17 @@
                 <ul>
                     <li>
                         <a id="account" class="a menu-opt-button text nav-text cursor-pointer" href="https://www.spotify.com/us/account/overview/?utm_source=spotify&utm_medium=menu&utm_campaign=your_account">Account</a>
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                        width="13" height="13"
+                        viewBox="0 0 172 172"
+                        style=" fill:#000000;">
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                            <path d="M0,172v-172h172v172z" fill="none"></path>
+                            <g fill="#a0a0a0">
+                                <path d="M148.95469,17.14401c-0.21364,0.00675 -0.42673,0.02544 -0.63828,0.05599h-33.64974c-2.06765,-0.02924 -3.99087,1.05709 -5.03322,2.843c-1.04236,1.78592 -1.04236,3.99474 0,5.78066c1.04236,1.78592 2.96558,2.87225 5.03322,2.843h20.55938l-59.01302,59.01302c-1.49778,1.43802 -2.10113,3.5734 -1.57735,5.5826c0.52378,2.0092 2.09284,3.57826 4.10204,4.10204c2.0092,0.52378 4.14458,-0.07957 5.5826,-1.57735l59.01302,-59.01302v20.55938c-0.02924,2.06765 1.05709,3.99087 2.843,5.03322c1.78592,1.04236 3.99474,1.04236 5.78066,0c1.78592,-1.04236 2.87225,-2.96558 2.843,-5.03322v-33.67214c0.23111,-1.67076 -0.28511,-3.35853 -1.41129,-4.61415c-1.12617,-1.25562 -2.74806,-1.95172 -4.43402,-1.90304zM34.4,40.13333c-6.26689,0 -11.46667,5.19977 -11.46667,11.46667v86c0,6.26689 5.19977,11.46667 11.46667,11.46667h86c6.26689,0 11.46667,-5.19977 11.46667,-11.46667v-57.33333v-14.78125l-11.46667,11.46667v14.78125v45.86667h-86v-86h45.86667h11.46667h3.31458l11.46667,-11.46667h-14.78125h-11.46667z"></path>
+                            </g>
+                        </g>
+                        </svg>
                     </li>
                     <li>
                         <button id="playlists" class="menu-opt-button text nav-text cursor-pointer">Playlists</button>
@@ -39,7 +50,7 @@
                 </svg> 
             </button>
             <div class="main-music-player-left-side">
-                <img src="#" class="track-img">
+                <img class="track-img appear-animation">
                 <span class="text left-side-song-name cursor-default">Title</span>
                 <span class="text left-side-artist cursor-default">Artist</span>
             </div>
@@ -57,12 +68,12 @@
             </div>
         </main>
         <div class="footer">
-            <input type="range" class="progress-bar slider-progress" min="0" max="100">
+            <input type="range" class="progress-bar progress-bar-playback slider-progress" min="0" max="1000" step="1000" value="0">
             <div class="under-progress-bar">
                 <div class="text progress-time progress-time-played cursor-default">0:00</div>
                 <div class="controls">
                     <div class="controls-left">
-                        <img src="#" class="track-img track-img-compact">
+                        <img class="track-img track-img-compact">
                         <div class="controls-left-track-info">
                             <span class="text song-name-compact cursor-default">Title</span>
                             <span class="text artist-compact cursor-default">Artist</span>
@@ -80,9 +91,12 @@
                             </svg>   
                         </button>
                         <button class="controls-button controls-button-play-pause">
-                            <svg class="controls-button-icon" width="16" height="22" viewBox="0 0 14 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg class="controls-button-icon pause-icon" width="16" height="22" viewBox="0 0 14 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1.75049 0.149902V24.6003M11.7505 0.149902V24.6003" stroke="white" stroke-width="3"/>
                             </svg>
+                            <svg class="controls-button-icon play-icon" width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 6.02503V26.975C8 28.5725 9.80089 29.5432 11.1878 28.6736L28.0375 18.1986C29.3208 17.41 29.3208 15.59 28.0375 14.7811L11.1878 4.32639C9.80089 3.45685 8 4.4275 8 6.02503Z"/>
+                            </svg>                                                             
                         </button>
                         <button class="controls-button controls-button-next">
                             <svg class="controls-button-icon" width="28" height="28" viewBox="0 0 30 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -102,13 +116,14 @@
                                 <path d="M14.2839 24.8351L13.5768 25.5422C13.7644 25.7297 14.0187 25.8351 14.2839 25.8351C14.5492 25.8351 14.8035 25.7297 14.9911 25.5422L14.2839 24.8351ZM3.15028 13.7014L2.44317 14.4085H2.44317L3.15028 13.7014ZM12.4836 4.36806L11.7765 5.07516V5.07516L12.4836 4.36806ZM14.2839 6.16839L13.5768 6.8755C13.7644 7.06304 14.0187 7.16839 14.2839 7.16839C14.5492 7.16839 14.8035 7.06304 14.9911 6.8755L14.2839 6.16839ZM16.0843 4.36805L15.3772 3.66095V3.66095L16.0843 4.36805ZM14.9911 24.128L3.85739 12.9943L2.44317 14.4085L13.5768 25.5422L14.9911 24.128ZM24.7105 12.9943L13.5768 24.128L14.9911 25.5422L26.1247 14.4085L24.7105 12.9943ZM11.7765 5.07516L13.5768 6.8755L14.9911 5.46129L13.1907 3.66095L11.7765 5.07516ZM14.9911 6.8755L16.7914 5.07516L15.3772 3.66095L13.5768 5.46129L14.9911 6.8755ZM20.7509 1.43506C18.7354 1.43506 16.8024 2.23573 15.3772 3.66095L16.7914 5.07516C17.8415 4.02502 19.2658 3.43506 20.7509 3.43506V1.43506ZM26.3506 9.03472C26.3506 10.5198 25.7606 11.9441 24.7105 12.9943L26.1247 14.4085C27.5499 12.9833 28.3506 11.0503 28.3506 9.03472H26.3506ZM28.3506 9.03472C28.3506 4.83754 24.9481 1.43506 20.7509 1.43506V3.43506C23.8436 3.43506 26.3506 5.94211 26.3506 9.03472H28.3506ZM7.81695 3.43506C9.30207 3.43506 10.7264 4.02502 11.7765 5.07516L13.1907 3.66095C11.7655 2.23574 9.8325 1.43506 7.81695 1.43506V3.43506ZM2.21729 9.03472C2.21729 5.94211 4.72434 3.43506 7.81695 3.43506V1.43506C3.61977 1.43506 0.217285 4.83754 0.217285 9.03472H2.21729ZM3.85739 12.9943C2.80725 11.9441 2.21729 10.5198 2.21729 9.03472H0.217285C0.217285 11.0503 1.01796 12.9833 2.44317 14.4085L3.85739 12.9943Z"/>
                             </svg>
                         </button>
-                        <input type="range" class="progress-bar progress-bar-volume slider-progress" min="0" max="100">
+                        <input type="range" class="progress-bar progress-bar-volume slider-progress" min="0" max="100" step="1" value="30">
                     </div>
                 </div>
-                <div class="text progress-time progress-time-total cursor-default">0:00</div>
+                <div class="text progress-time progress-time-left cursor-default">0:00</div>
             </div>
         </div>
     </div>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script type="module" src="../static/js/mp-ui.js"></script>
     <script type="module" src="../static/js/menu.js"></script>
     <script type="module" src="../static/js/mp-menu.js"></script>

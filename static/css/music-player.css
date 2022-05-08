@@ -22,7 +22,7 @@
 }
 
 .track-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 400px;
   width: 400px;
   object-fit: cover;
@@ -35,6 +35,9 @@
 }
 
 .left-side-song-name {
+  width: 70%;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 45px 0 0 0;
   font-size: 23px;
   text-align: center;
@@ -49,6 +52,9 @@
 }
 
 .left-side-artist {
+  width: 60%;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 20px 0 0 0;
   font-size: 15px;
   text-align: center;
@@ -63,6 +69,9 @@
 }
 
 .controls-left-track-info {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -77,7 +86,7 @@
 
 .footer {
   position: relative;
-  height: 100px;
+  height: 85px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -93,6 +102,7 @@
 }
 
 .progress-time {
+  min-width: 30px;
   margin: 15px;
   font-size: 10px;
   color: var(--light-gray);
@@ -167,11 +177,13 @@
 
 .controls-button-play-pause path {
   stroke: var(--off-white);
+  fill: var(--off-white);
   transition: 300ms;
 }
 
 .controls-button-play-pause:hover path {
   stroke: var(--white);
+  fill: var(--white);
 }
 
 .menu-button-mp {
@@ -255,20 +267,31 @@
 }
 
 .playlist-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 170px;
   width: 170px;
   object-fit: cover;
 }
 
 .playlist-title {
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 170px;
+  margin-top: 5px;
   font-size: 15px;
   color: var(--white);
 }
 
 .playlist-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 170px;
+  margin-top: 4px;
+  font-size: 10px;
+  color: var(--light-gray);
+}
+
+.playlist-description a {
   font-size: 10px;
   color: var(--light-gray);
 }
@@ -306,7 +329,7 @@
 }
 
 .tracks-list-item-img {
-  border: 1px solid var(--white);
+  /* border: 1px solid var(--white); */
   height: 80px;
   width: 80px;
   margin: 10px;
@@ -314,6 +337,10 @@
 }
 
 .tracks-list-item-info {
+  width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -360,7 +387,7 @@
     display: none;
   }
 
-  .progress-time-total {
+  .progress-time-left {
     width: 3%;
   }
 
@@ -433,7 +460,7 @@
     display: none;
   }
 
-  .progress-time-total {
+  .progress-time-left {
     width: 5%;
   }
 
