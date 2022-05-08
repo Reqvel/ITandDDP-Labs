@@ -1,13 +1,19 @@
-import SideMenu from "../components/SideMenu"
+import { useState } from 'react';
+import SideMenuBtn from "../components/SideMenuBtn";
+import SideMenu from "../components/SideMenu";
 
 const PlayerPage = () => {
+    const [isShown, setIsShown] = useState(false)
+    const showHideSideMenu = () => setIsShown(!isShown)
+
     return (
         <>
             <div className="gradient-background"></div>
             <div className="background-filter appear-animation appear-animation-500"></div>
             <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
                 <main className="main-music-player">
-                    <SideMenu />
+                    <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                    <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                     <div className="main-music-player-left-side">
                         <img className="track-img appear-animation"/>
                         <span className="text left-side-song-name cursor-default">Title</span>
