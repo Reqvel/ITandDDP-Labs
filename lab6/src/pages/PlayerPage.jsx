@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import SideMenuBtn from "../components/SideMenuBtn";
 import SideMenu from "../components/SideMenu";
+import PlayerLeft from '../components/PlayerLeft';
+import PlayerRight from '../components/PlayerRight';
+import PlayerFooter from '../components/PlayerFooter';
 
 const PlayerPage = () => {
     const [isShown, setIsShown] = useState(false)
@@ -14,24 +17,10 @@ const PlayerPage = () => {
                 <main className="main-music-player">
                     <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                     <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
-                    <div className="main-music-player-left-side">
-                        <img className="track-img appear-animation"/>
-                        <span className="text left-side-song-name cursor-default">Title</span>
-                        <span className="text left-side-artist cursor-default">Artist</span>
-                    </div>
-                    <div className="main-music-player-right-side">
-                        <div className="background-filter"></div>
-                        <div className="content">
-                            <h1 className="content-header text cursor-default">Welcome back!</h1>
-                            <div className="content-container-opt content-container-opt-hidden">
-
-                            </div>
-                            <div className="content-container">
-                                
-                            </div>
-                        </div>
-                    </div>
+                    <PlayerLeft />
+                    <PlayerRight />
                 </main>
+                <PlayerFooter />
             </div>
         </>
     )
