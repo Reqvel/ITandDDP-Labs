@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 const SideNav = ({ isShown }) => {
     return (
-        <div className={isShown ? 'side-menu' : 'side-menu side-menu-hidden'}>
+        <div className={isShown ? 'side-nav' : 'side-nav side-nav-hidden'}>
             <ul>
                 <li>
                     <Link to="/" className="a text nav-text">About</Link>

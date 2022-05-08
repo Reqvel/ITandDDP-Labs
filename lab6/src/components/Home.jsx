@@ -11,7 +11,7 @@ const Home = () => {
                 <p className="text main-home-paragraph cursor-default">
                     A streaming service for all music fans.
                 </p>
-                <Link to="/SignIn" className="a text main-home-button">
+                <Link to="/MusicPlayer" className="a text main-home-button">
                     Get started
                 </Link>
             </section>
