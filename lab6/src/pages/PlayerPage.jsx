@@ -4,6 +4,7 @@ import SideMenu from "../components/SideMenu";
 import PlayerLeft from '../components/PlayerLeft';
 import PlayerRight from '../components/PlayerRight';
 import PlayerFooter from '../components/PlayerFooter';
+import { Outlet } from 'react-router-dom';
 
 const PlayerPage = () => {
     const [isShown, setIsShown] = useState(false)
@@ -18,7 +19,9 @@ const PlayerPage = () => {
                     <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                     <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                     <PlayerLeft />
-                    <PlayerRight />
+                    <PlayerRight>
+                        <Outlet />
+                    </PlayerRight>
                 </main>
                 <PlayerFooter />
             </div>

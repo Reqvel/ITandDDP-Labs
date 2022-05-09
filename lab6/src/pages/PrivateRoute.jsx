@@ -39,7 +39,7 @@ function validateLogin() {
 function PrivateRoute() {
     const token = validateLogin()
     return token ?
-        <Outlet/> :
+        <Outlet/>:
         <Navigate to="/SignIn"/>;
 }
 

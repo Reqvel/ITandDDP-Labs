@@ -16,14 +16,16 @@ const SideMenu = ({ isShown, showHideSideMenu }) => {
                     <LinkIcon />
                 </li>
                 <li>
-                    <button id="playlists" 
-                            className="menu-opt-button text nav-text cursor-pointer"
-                            onClick={showHideSideMenu}>Playlists</button>
+                    <Link id="playlists" 
+                            to="/MusicPlayer/Playlists"
+                            className="a menu-opt-button text nav-text cursor-pointer"
+                            onClick={showHideSideMenu}>Playlists</Link>
                 </li>
                 <li>
-                    <button id="search"
-                            className="menu-opt-button text nav-text cursor-pointer"
-                            onClick={showHideSideMenu}>Search</button>
+                    <Link id="search"
+                            to="/MusicPlayer"
+                            className="a enu-opt-button text nav-text cursor-pointer"
+                            onClick={showHideSideMenu}>Search</Link>
                 </li>
                 <li>
                     <Link to="/" 
