@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Playlistcard from "../components/PlaylistCard";
+import PlaylistCard from "../components/PlaylistCard";
 import { contentScrolled } from "../actions/ContentScroll";
 import { getUsername, 
         getCurrentPlaylists, 
@@ -34,7 +34,7 @@ const Playlists = () => {
                     playlists?.length > 0
                     ? (
                         <div className="playlists-grid appear-animation">
-                            { playlists.map( (playlist) => <Playlistcard playlist={playlist} /> ) }
+                            { playlists.map( (playlist) => <PlaylistCard playlist={playlist} /> ) }
                         </div>
                     ) : (
                         <></>

@@ -5,6 +5,7 @@ import PlayerPage from "./pages/PlayerPage";
 import PrivateRoute from "./pages/PrivateRoute";
 import PlaylistsPage from "./pages/PlaylistsPage";
 import Playlists from "./components/Playlists";
+import PlaylistTracks from "./components/PlaylistTracks";
 
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
             <Route path="/MusicPlayer" element={ <PlayerPage /> }>
               <Route path="Playlists" element={ <PlaylistsPage /> }>
                 <Route path="" element={ <Playlists /> } />
-                {/* <Route path="Tracks" element={ <Playlists /> } /> */}
+                <Route path="Tracks" element={ <PlaylistTracks /> } />
               </Route>
             </Route>
           </Route>
