@@ -4,6 +4,7 @@ import SignInPage from "./pages/SignInPage";
 import PlayerPage from "./pages/PlayerPage";
 import PrivateRoute from "./pages/PrivateRoute";
 import PlaylistsPage from "./pages/PlaylistsPage";
+import Playlists from "./components/Playlists";
 
 
 const App = () => {
@@ -15,7 +16,10 @@ const App = () => {
           <Route path="/SignIn" element={ <SignInPage /> } />
           <Route path="/MusicPlayer" element={ <PrivateRoute /> }>
             <Route path="/MusicPlayer" element={ <PlayerPage /> }>
-              <Route path="Playlists" element={ <PlaylistsPage /> } />
+              <Route path="Playlists" element={ <PlaylistsPage /> }>
+                <Route path="" element={ <Playlists /> } />
+                {/* <Route path="Tracks" element={ <Playlists /> } /> */}
+              </Route>
             </Route>
           </Route>
         </Routes>
