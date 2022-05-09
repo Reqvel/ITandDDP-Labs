@@ -3,6 +3,7 @@ import { nextItemsUrlKey, getTracksFromPlaylist } from '../API'
 import { TracksContext, HeaderContext } from '../pages/PlaylistsPage'
 import { Link } from "react-router-dom"
 import { useContext } from 'react'
+import { extractTracks } from '../common/ExtractTracks'
 
 const PlaylistCard = ({ playlist }) => {
     const { tracks, setTracks } = useContext(TracksContext)
@@ -10,7 +11,7 @@ const PlaylistCard = ({ playlist }) => {
 
     async function setPlaylistData(id, title) {
         const res = await getTracksFromPlaylist(id)
-        setTracks(res[0])
+        setTracks(extractTracks(res[0]))
         localStorage.setItem(nextItemsUrlKey, res[1])
         setHeader(title)
     }

@@ -6,6 +6,7 @@ import PrivateRoute from "./pages/PrivateRoute";
 import PlaylistsPage from "./pages/PlaylistsPage";
 import Playlists from "./components/Playlists";
 import PlaylistTracks from "./components/PlaylistTracks";
+import SearchPage from "./pages/SearchPage";
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="" element={ <Playlists /> } />
                 <Route path="Tracks" element={ <PlaylistTracks /> } />
               </Route>
+              <Route path="Search" element={ <SearchPage /> } />
             </Route>
           </Route>
         </Routes>

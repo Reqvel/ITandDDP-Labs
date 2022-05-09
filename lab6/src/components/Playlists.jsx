@@ -27,8 +27,6 @@ const Playlists = () => {
     return (
         <>
             <h1 className="content-header text cursor-default">{ headerText }</h1>
-            <div className="content-container-opt content-container-opt-hidden">
-            </div>
             <div className="content-container" onScroll={ (e) => contentScrolled(e, getPlaylists)}>
                 {
                     playlists?.length > 0

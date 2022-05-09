@@ -3,6 +3,7 @@ import { TracksContext, HeaderContext } from "../pages/PlaylistsPage";
 import { getTracksFromPlaylist, nextItemsUrlKey  } from "../API";
 import { contentScrolled } from "../actions/ContentScroll";
 import Tracks from "./Tracks";
+import { extractTracks } from '../common/ExtractTracks'
 
 const PlaylistTracks = () => {
     const { tracks, setTracks } = useContext(TracksContext)
@@ -10,7 +11,7 @@ const PlaylistTracks = () => {
 
     async function getPlaylistTracks(nextUrl="") {
         const res = await getTracksFromPlaylist("", nextUrl)
-        setTracks([...tracks, ...res[0]])
+        setTracks([...tracks, ...extractTracks(res[0])])
         localStorage.setItem(nextItemsUrlKey, res[1])
     }
 

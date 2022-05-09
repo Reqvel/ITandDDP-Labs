@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 export const TracksContext = React.createContext({
     tracks: [],
@@ -16,10 +16,6 @@ const PlaylistsPage = () => {
     const [header, setHeader] = useState("")
     const tracksValue = { tracks, setTracks }
     const headerValue = { header, setHeader }
-
-    useEffect( () => {
-        console.log(tracks)
-    }, [tracks])
 
     return (
         <TracksContext.Provider value={tracksValue}>
