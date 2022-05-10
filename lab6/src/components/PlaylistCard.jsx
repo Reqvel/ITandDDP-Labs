@@ -29,14 +29,15 @@ const PlaylistCard = ({ playlist }) => {
                         : playlist.description
 
     return (
-        <Link to="Tracks"
-            id={id}
-            className="a playlists-grid-item cursor-pointer"
+        <div className="a playlists-grid-item cursor-pointer"
             onClick={ () => {setPlaylistData(id, title)}}>
-            <img src={imgSrc} className="playlist-img"/>
-            <span className="text playlist-title">{title}</span>
-            <span className="a text playlist-description" dangerouslySetInnerHTML={{ __html: description }}></span>
-        </Link>
+            <Link to="Tracks"
+                className='a playlists-grid-item-container'>
+                <img src={imgSrc} className="playlist-img"/>
+                <span className="text playlist-title">{title}</span>
+                <span className="a text playlist-description" dangerouslySetInnerHTML={{ __html: description }}></span>
+            </Link>
+        </div>
     )
 }
 

@@ -281,39 +281,53 @@
 
 .playlists-grid {
   display: grid;
-  gap: 25px;
+  gap: 40px;
   grid-template-columns: repeat(4, 1fr);
   padding: 25px;
 }
 
 .playlists-grid-item {
   display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.playlists-grid-item-container {
+  height: 260px;
+  border: 1px solid var(--light-gray);
+  display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
 }
 
 .playlist-img {
-  /* border: 1px solid var(--white); */
   height: 170px;
   width: 170px;
   object-fit: cover;
 }
 
 .playlist-title {
-  text-overflow: ellipsis;
-  overflow: hidden;
   width: 170px;
-  margin-top: 5px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 10px;
   font-size: 15px;
   color: var(--white);
 }
 
 .playlist-description {
-  text-overflow: ellipsis;
-  overflow: hidden;
   width: 170px;
-  margin-top: 4px;
-  font-size: 10px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 6px;
+  font-size: 9px;
   color: var(--light-gray);
 }
 
@@ -384,19 +398,30 @@
   color: var(--light-gray);
 }
 
-@media only screen and (max-width: 1700px) {
+@media only screen and (max-width: 2000px) {
   .playlists-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media only screen and (min-width: 1350px) {
+@media only screen and (max-width: 500px) {
+  .playlists-grid {
+    gap: 7px;
+    padding: 7px;
+  }
+
+  .playlists-grid-item-container {
+    padding: 7px;
+  }
+}
+
+@media only screen and (min-width: 1450px) {
   .controls-left {
     visibility: hidden;
   }
 }
 
-@media only screen and (max-width: 1350px) {
+@media only screen and (max-width: 1450px) {
   .main-music-player-left-side {
     display: none;
   }
@@ -439,6 +464,10 @@
 }
 
 @media only screen and (max-width: 760px) {
+  .playlists-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .tracks-list {
     padding: 15px;
     margin-right: 24px;
@@ -455,11 +484,6 @@
   .content-container-opt {
     min-height: 30px;
     margin: 0 49px 15px 15px;
-  }
-
-  .playlists-grid {
-    gap: 15px;
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .controls-right {
