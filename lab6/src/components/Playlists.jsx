@@ -32,7 +32,7 @@ const Playlists = () => {
                     playlists?.length > 0
                     ? (
                         <div className="playlists-grid appear-animation">
-                            { playlists.map( (playlist) => <PlaylistCard playlist={playlist} /> ) }
+                            { playlists.map( (playlist) => <PlaylistCard key={playlist.id} playlist={playlist} /> ) }
                         </div>
                     ) : (
                         <></>

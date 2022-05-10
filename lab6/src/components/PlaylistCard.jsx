@@ -1,6 +1,6 @@
 import '../css/music-player.css'
 import { nextItemsUrlKey, getTracksFromPlaylist } from '../API'
-import { TracksContext, HeaderContext } from '../pages/PlaylistsPage'
+import { TracksContext, HeaderContext, UriContext } from '../pages/PlaylistsPage'
 import { Link } from "react-router-dom"
 import { useContext } from 'react'
 import { extractTracks } from '../common/ExtractTracks'
@@ -8,12 +8,16 @@ import { extractTracks } from '../common/ExtractTracks'
 const PlaylistCard = ({ playlist }) => {
     const { tracks, setTracks } = useContext(TracksContext)
     const { header, setHeader } = useContext(HeaderContext)
+    const { contextUri, setContextUri } = useContext(UriContext)
 
     async function setPlaylistData(id, title) {
         const res = await getTracksFromPlaylist(id)
         setTracks(extractTracks(res[0]))
         localStorage.setItem(nextItemsUrlKey, res[1])
         setHeader(title)
+
+        const uri = 'spotify:playlist:' + id
+        setContextUri(uri)
     }
 
 
@@ -26,7 +30,7 @@ const PlaylistCard = ({ playlist }) => {
 
     return (
         <Link to="Tracks"
-            key={id}
+            id={id}
             className="a playlists-grid-item cursor-pointer"
             onClick={ () => {setPlaylistData(id, title)}}>
             <img src={imgSrc} className="playlist-img"/>

@@ -11,16 +11,25 @@ export const HeaderContext = React.createContext({
     setHeader: () => {}
 })
 
+export const UriContext = React.createContext({
+    contextUri: "",
+    setContextUri: () => {}
+})
+
 const PlaylistsPage = () => {
     const [tracks, setTracks] = useState([])
     const [header, setHeader] = useState("")
+    const [contextUri, setContextUri] = useState("")
     const tracksValue = { tracks, setTracks }
     const headerValue = { header, setHeader }
+    const contextUriValue = { contextUri, setContextUri }
 
     return (
         <TracksContext.Provider value={tracksValue}>
             <HeaderContext.Provider value={headerValue}>
-                <Outlet />
+                <UriContext.Provider value={contextUriValue}>
+                    <Outlet />
+                </UriContext.Provider>
             </HeaderContext.Provider>
         </TracksContext.Provider >
     )
