@@ -8,8 +8,17 @@ import { ReactComponent as Play } from '../svgs/Play.svg'
 import { ReactComponent as Next } from '../svgs/Next.svg'
 import { ReactComponent as Shuffle } from '../svgs/Shuffle.svg'
 import { ReactComponent as Heart } from '../svgs/Heart.svg'
+import { useContext } from 'react'
+import { TrackImgSrcContext, 
+        TrackTitleContext,
+        TrackArtistsContext} from '../pages/PlayerPage'
 
 const PlayerFooter = () => {
+
+    const {trackImgSrc, setTrackImgSrc} = useContext(TrackImgSrcContext)
+    const {trackTitle, setTrackTitle} = useContext(TrackTitleContext)
+    const {trackArtists, setTrackArtists} = useContext(TrackArtistsContext)
+
     return (
         <div className="footer">
             <input type="range" className="progress-bar progress-bar-playback slider-progress" min="0" max="1000" step="1000" value="0"/>
@@ -17,10 +26,11 @@ const PlayerFooter = () => {
                 <div className="text progress-time progress-time-played cursor-default">0:00</div>
                 <div className="controls">
                     <div className="controls-left">
-                        <img className="track-img track-img-compact"/>
+                        <img src={trackImgSrc}
+                            className="track-img track-img-compact"/>
                         <div className="controls-left-track-info">
-                            <span className="text song-name-compact cursor-default">Title</span>
-                            <span className="text artist-compact cursor-default">Artist</span>
+                            <span className="text song-name-compact cursor-default">{trackTitle}</span>
+                            <span className="text artist-compact cursor-default">{trackArtists}</span>
                         </div>
                     </div>
                     <div className="controls-center">

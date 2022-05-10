@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import BackgroundMp from '../components/BackgroundMP';
 import SideMenuBtn from "../components/SideMenuBtn";
 import SideMenu from "../components/SideMenu";
 import PlayerLeft from '../components/PlayerLeft';
@@ -38,7 +39,7 @@ const PlayerPage = () => {
             <TrackImgSrcContext.Provider value={trackImgSrcValue}>
                 <TrackTitleContext.Provider value={trackTitleValue}>
                     <TrackArtistsContext.Provider value={trackArtistsValue}>
-                        <div className="gradient-background"></div>
+                        <BackgroundMp />
                         <div className="background-filter appear-animation appear-animation-500"></div>
                         <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
                             <main className="main-music-player">
