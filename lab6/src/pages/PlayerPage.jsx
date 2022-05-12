@@ -6,7 +6,7 @@ import PlayerLeft from '../components/PlayerLeft';
 import PlayerRight from '../components/PlayerRight';
 import PlayerFooter from '../components/PlayerFooter';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { accessTokenKey, transferPlayback } from '../API.js'
+import { accessTokenKey } from '../API.js'
 import { getArtistsNames } from '../common/GetArtistsNames.js'
 
 export const TrackVisualsContext = React.createContext({

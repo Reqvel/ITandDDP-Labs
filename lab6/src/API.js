@@ -93,6 +93,21 @@ export async function transferPlayback(device_ids) {
 }
 
 
+export async function getCurrentlyPlayingTrack() {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player/currently-playing';
+    const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const response = await fetch(url, options);
+}
+
+
 export async function getCurrentPlaylists(nextUrl="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
     var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/me/playlists'
