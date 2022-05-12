@@ -5,10 +5,9 @@ import SideMenu from "../components/SideMenu";
 import PlayerLeft from '../components/PlayerLeft';
 import PlayerRight from '../components/PlayerRight';
 import PlayerFooter from '../components/PlayerFooter';
-import { Outlet } from 'react-router-dom';
-import { accessTokenKey } from '../API.js'
+import { Outlet, useNavigate } from 'react-router-dom';
+import { accessTokenKey, transferPlayback } from '../API.js'
 import { getArtistsNames } from '../common/GetArtistsNames.js'
-import { signOut } from '../actions/SignOut.js'
 
 export const TrackVisualsContext = React.createContext({
     trackImgSrc: "",
@@ -29,10 +28,14 @@ export const PlaybackStateContext = React.createContext({
     position: 0,
     setPosition: () => {},
     duration: 0,
-    setDuration: () => {}
+    setDuration: () => {},
+    deviceId: "",
+    setDeviceId: () => {},
 })
 
 const PlayerPage = () => {
+    const navigate = useNavigate()
+
     const [isShown, setIsShown] = useState(false)
     const showHideSideMenu = () => setIsShown(!isShown)
 
@@ -44,6 +47,7 @@ const PlayerPage = () => {
     const [repeatMode, setRepeatMode] = useState(0)
     const [position, setPosition] = useState(0)
     const [duration, setDuration] = useState(0)
+    const [deviceId, setDeviceId] = useState("")
 
     const trackVisualsValue = {trackImgSrc, setTrackImgSrc,
                             trackTitle, setTrackTitle,
@@ -52,58 +56,58 @@ const PlayerPage = () => {
                             isShuffle, setIsShuffle,
                             repeatMode, setRepeatMode,
                             position, setPosition,
-                            duration, setDuration}
+                            duration, setDuration,
+                            deviceId, setDeviceId}
 
     const [player, setPlayer] = useState(undefined);
 
     useEffect(() => {
-        if(!player){
-            const script = document.createElement("script");
-            script.src = "https://sdk.scdn.co/spotify-player.js";
-            script.async = true;
-        
-            document.body.appendChild(script);
-        
-            window.onSpotifyWebPlaybackSDKReady = () => {
-                const player = new window.Spotify.Player({
-                    name: 'Spotifee Web Player',
-                    getOAuthToken: cb => { cb(localStorage.getItem(accessTokenKey)); },
-                    volume: 0.3
-                });
-        
-                setPlayer(player);
-        
-                player.addListener('ready', ({ device_id }) => {
-                    console.log('Ready with Device ID', device_id);
-                });
-        
-                player.addListener('not_ready', ({ device_id }) => {
-                    console.log('Device ID has gone offline', device_id);
-                });
-        
-                player.addListener('player_state_changed', (state) => {
-                    if(state){
-                        console.log(state)
-                        setTrackImgSrc(state.track_window.current_track.album?.images[0].url)
-                        setTrackTitle(state.track_window.current_track.name)
-                        setTrackArtists(getArtistsNames(state.track_window.current_track.artists))
-                        setIsPaused(state.paused)
-                        setIsShuffle(state.shuffle)
-                        setRepeatMode(state.repeat_mode)
-                        setPosition(state.position)
-                        setDuration(state.track_window.current_track.duration_ms)
-                    }
-                });
-        
-                player.connect();
-            }
-        };
+        const script = document.createElement("script");
+        script.src = "https://sdk.scdn.co/spotify-player.js";
+        script.async = true;
+    
+        document.body.appendChild(script);
+    
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            const player = new window.Spotify.Player({
+                name: 'Spotifee Web Player',
+                getOAuthToken: cb => { cb(localStorage.getItem(accessTokenKey)); },
+                volume: 0.3
+            });
+    
+            setPlayer(player);
+    
+            player.addListener('ready', ({ device_id }) => {
+                // transferPlayback([device_id]) // Not always working 
+                setDeviceId(device_id)
+                console.log('Ready with Device ID', device_id);
+            });
+    
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+    
+            player.addListener('player_state_changed', (state) => {
+                if(state){
+                    setTrackImgSrc(state.track_window.current_track.album?.images[0].url)
+                    setTrackTitle(state.track_window.current_track.name)
+                    setTrackArtists(getArtistsNames(state.track_window.current_track.artists))
+                    setIsPaused(state.paused)
+                    setIsShuffle(state.shuffle)
+                    setRepeatMode(state.repeat_mode)
+                    setPosition(state.position)
+                    setDuration(state.track_window.current_track.duration_ms)
+                }
+            });
+    
+            player.connect();
+        }
+        return () => player.disconnect();
     }, []);
 
-    function disconnectPlayer() {	
-        player.disconnect()
-        signOut()
-    }
+    useEffect( () => {
+        if(player) navigate('Search')
+    }, [player])
 
     return (
         <>
@@ -113,7 +117,7 @@ const PlayerPage = () => {
                 <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
                     <PlaybackStateContext.Provider value={playbackStateValue}>
                         <main className="main-music-player">
-                            <SideMenu signOutOnClick={disconnectPlayer} isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                            <SideMenu isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                             <SideMenuBtn isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                             <PlayerLeft />
                             <PlayerRight>

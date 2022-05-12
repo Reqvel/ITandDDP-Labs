@@ -6,7 +6,7 @@ import { startResumePlayback } from "../API";
 const TrackCard = ({ track, contextUri="" }) => {
 
     const {setTrackImgSrc, setTrackTitle, setTrackArtists} = useContext(TrackVisualsContext)
-    const {setIsPaused} = useContext(PlaybackStateContext)
+    const {setIsPaused, deviceId} = useContext(PlaybackStateContext)
 
     function setTrackVisuals(imgSrc, title, artistsNames) {
         setTrackImgSrc(imgSrc)
@@ -16,7 +16,7 @@ const TrackCard = ({ track, contextUri="" }) => {
 
     function togglePlayPause(id) {
         const trackUri = 'spotify:track:' + id
-        startResumePlayback(trackUri, 0, contextUri)
+        startResumePlayback(trackUri, 0, contextUri, deviceId)
         setIsPaused(false)
     }
 

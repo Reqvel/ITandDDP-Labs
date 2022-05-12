@@ -35,7 +35,7 @@ const PlayerFooter = () => {
             isShuffle, setIsShuffle,
             repeatMode, setRepeatMode,
             position, setPosition,
-            duration} = useContext(PlaybackStateContext)
+            duration, deviceId} = useContext(PlaybackStateContext)
 
     async function togglePlayPause() {
         const state = await getPlaybackState();
@@ -45,7 +45,7 @@ const PlayerFooter = () => {
         }
         else {
             const contextUri = state.context ? state.context.uri : "";
-            startResumePlayback(state.item.uri, state.progress_ms, contextUri);
+            startResumePlayback(state.item.uri, state.progress_ms, contextUri, deviceId);
             setIsPaused(false)
         }
     }

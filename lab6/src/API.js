@@ -75,6 +75,24 @@ export async function getUsername() {
 }
 
 
+export async function transferPlayback(device_ids) {
+    const storedAccessToken = localStorage.getItem(accessTokenKey);
+    var url = 'https://api.spotify.com/v1/me/player';
+    var bodyOpt = { "device_ids": device_ids }
+    const options = {
+        method: 'PUT',
+        headers: {
+            'Authorization': 'Bearer ' + storedAccessToken,
+            'Content-Type': 'application/json'
+        },
+        body:  JSON.stringify(bodyOpt)
+    }
+
+    const response = await fetch(url, options);
+    if(response.ok) console.log("Playback transferred")
+}
+
+
 export async function getCurrentPlaylists(nextUrl="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
     var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/me/playlists'
@@ -134,9 +152,12 @@ export async function getPlaybackState() {
 }
 
 
-export async function startResumePlayback(trackUri, progressMs=0, contextUri="") {
+export async function startResumePlayback(trackUri, progressMs=0, contextUri="", deviceId="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
     var url = 'https://api.spotify.com/v1/me/player/play';
+    if(deviceId){
+        url += '?device_id=' + deviceId
+    }
     var bodyOpt = { "position_ms": progressMs }
     if(contextUri) {
         bodyOpt["context_uri"] = contextUri 
@@ -153,6 +174,8 @@ export async function startResumePlayback(trackUri, progressMs=0, contextUri="")
     }
 
     const response = await fetch(url, options);
+    const json = await response.json();
+    console.log(json)
     if(response.status == 404) alert("Please connect to the Spotifee Web Player using Spotify Web Player or Spotify App")
 }
 
