@@ -6,20 +6,29 @@ import PlayerLeft from '../components/PlayerLeft';
 import PlayerRight from '../components/PlayerRight';
 import PlayerFooter from '../components/PlayerFooter';
 import { Outlet } from 'react-router-dom';
+import { accessTokenKey } from '../API.js'
+import { getArtistsNames } from '../common/GetArtistsNames.js'
 
-export const TrackImgSrcContext = React.createContext({
+export const TrackVisualsContext = React.createContext({
     trackImgSrc: "",
-    setTrackImgSrc: () => {}
-})
-
-export const TrackTitleContext = React.createContext({
+    setTrackImgSrc: () => {},
     trackTitle: "",
-    setTrackTitle: () => {}
-})
-
-export const TrackArtistsContext = React.createContext({
+    setTrackTitle: () => {},
     trackArtists: "",
     setTrackArtists: () => {}
+})
+
+export const PlaybackStateContext = React.createContext({
+    isPaused: true,
+    setIsPaused: () => {},
+    isShuffle: false,
+    setIsShuffle: () => {},
+    repeatMode: 0,
+    setRepeatMode: () => {},
+    position: 0,
+    setPosition: () => {},
+    duration: 0,
+    setDuration: () => {}
 })
 
 const PlayerPage = () => {
@@ -29,32 +38,86 @@ const PlayerPage = () => {
     const [trackImgSrc, setTrackImgSrc] = useState("")
     const [trackTitle, setTrackTitle] = useState("Title")
     const [trackArtists, setTrackArtists] = useState("Artist")
+    const [isPaused, setIsPaused] = useState(true)
+    const [isShuffle, setIsShuffle] = useState(false)
+    const [repeatMode, setRepeatMode] = useState(0)
+    const [position, setPosition] = useState(0)
+    const [duration, setDuration] = useState(0)
 
-    const trackImgSrcValue = {trackImgSrc, setTrackImgSrc}
-    const trackTitleValue = {trackTitle, setTrackTitle}
-    const trackArtistsValue = {trackArtists, setTrackArtists}
+    const trackVisualsValue = {trackImgSrc, setTrackImgSrc,
+                            trackTitle, setTrackTitle,
+                            trackArtists, setTrackArtists}
+    const playbackStateValue = {isPaused, setIsPaused,
+                            isShuffle, setIsShuffle,
+                            repeatMode, setRepeatMode,
+                            position, setPosition,
+                            duration, setDuration}
+
+    const [player, setPlayer] = useState(undefined);
+
+    useEffect(() => {
+        if(!player){
+            const script = document.createElement("script");
+            script.src = "https://sdk.scdn.co/spotify-player.js";
+            script.async = true;
+        
+            document.body.appendChild(script);
+        
+            window.onSpotifyWebPlaybackSDKReady = () => {
+                const player = new window.Spotify.Player({
+                    name: 'Spotifee Web Player',
+                    getOAuthToken: cb => { cb(localStorage.getItem(accessTokenKey)); },
+                    volume: 0.3
+                });
+        
+                setPlayer(player);
+        
+                player.addListener('ready', ({ device_id }) => {
+                    console.log('Ready with Device ID', device_id);
+                });
+        
+                player.addListener('not_ready', ({ device_id }) => {
+                    console.log('Device ID has gone offline', device_id);
+                });
+        
+                player.addListener('player_state_changed', (state) => {
+                    if(state){
+                        console.log(state)
+                        setTrackImgSrc(state.track_window.current_track.album?.images[0].url)
+                        setTrackTitle(state.track_window.current_track.name)
+                        setTrackArtists(getArtistsNames(state.track_window.current_track.artists))
+                        setIsPaused(state.paused)
+                        setIsShuffle(state.shuffle)
+                        setRepeatMode(state.repeat_mode)
+                        setPosition(state.position)
+                        setDuration(state.track_window.current_track.duration_ms)
+                    }
+                });
+        
+                player.connect();
+            }
+        };
+    }, []);
 
     return (
         <>
-            <TrackImgSrcContext.Provider value={trackImgSrcValue}>
-                <TrackTitleContext.Provider value={trackTitleValue}>
-                    <TrackArtistsContext.Provider value={trackArtistsValue}>
-                        <BackgroundMp />
-                        <div className="background-filter appear-animation appear-animation-500"></div>
-                        <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
-                            <main className="main-music-player">
-                                <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
-                                <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
-                                <PlayerLeft />
-                                <PlayerRight>
-                                    <Outlet />
-                                </PlayerRight>
-                            </main>
-                            <PlayerFooter />
-                        </div>
-                    </TrackArtistsContext.Provider >
-                </TrackTitleContext.Provider>
-            </TrackImgSrcContext.Provider>
+            <TrackVisualsContext.Provider value={trackVisualsValue}>
+                <BackgroundMp />
+                <div className="background-filter appear-animation appear-animation-500"></div>
+                <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
+                    <PlaybackStateContext.Provider value={playbackStateValue}>
+                        <main className="main-music-player">
+                            <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                            <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                            <PlayerLeft />
+                            <PlayerRight>
+                                <Outlet />
+                            </PlayerRight>
+                        </main>
+                        <PlayerFooter />
+                    </PlaybackStateContext.Provider>
+                </div>
+            </TrackVisualsContext.Provider>
         </>
     )
 }

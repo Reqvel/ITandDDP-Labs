@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react'
-import { TrackImgSrcContext } from '../pages/PlayerPage'
+import { TrackVisualsContext } from '../pages/PlayerPage'
 import { getBgColors } from '../common/GetBgColors.js'
 
 const BackgroundMp = () => {
 
-    const {trackImgSrc, setTrackImgSrc} = useContext(TrackImgSrcContext)
+    const { trackImgSrc } = useContext(TrackVisualsContext)
     const [background, setBackground] = useState("")
 
     function changeBackground(e) {

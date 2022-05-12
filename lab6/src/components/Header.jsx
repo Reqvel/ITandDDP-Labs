@@ -9,7 +9,7 @@ const Header = () => {
   const showHideSideNav = () => setIsShown(!isShown)
 
   return (
-    <div>
+    <div className="header-container">
       <div className="header">
         <div className="side-nav-counter-block"></div>
         <nav>

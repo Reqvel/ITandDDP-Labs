@@ -1,15 +1,11 @@
 import '../css/music-player.css'
 import '../css/base.css'
 import { useContext } from 'react'
-import { TrackImgSrcContext, 
-        TrackTitleContext,
-        TrackArtistsContext} from '../pages/PlayerPage'
+import { TrackVisualsContext } from '../pages/PlayerPage'
 
 const PlayerLeft = () => {
 
-    const {trackImgSrc, setTrackImgSrc} = useContext(TrackImgSrcContext)
-    const {trackTitle, setTrackTitle} = useContext(TrackTitleContext)
-    const {trackArtists, setTrackArtists} = useContext(TrackArtistsContext)
+    const {trackImgSrc, trackTitle, trackArtists} = useContext(TrackVisualsContext)
 
     return (
         <div className="main-music-player-left-side">

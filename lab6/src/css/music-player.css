@@ -6,7 +6,7 @@
 }
 
 .side-menu {
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 200px;
   z-index: 1;
@@ -128,7 +128,10 @@
 }
 
 .progress-time {
-  min-width: 30px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  min-width: 35px;
   margin: 15px;
   font-size: 10px;
   color: var(--light-gray);
@@ -161,7 +164,7 @@
   width: 34px;
   background: none;
   border: none;
-  margin: 0px 30px 0px 30px;
+  margin: 0px 20px 0px 20px;
 }
 
 .controls-button-selected .controls-button-icon path,
@@ -170,11 +173,11 @@
 }
 
 .controls-button-repeat {
-  margin-right: 40px;
+  margin-left: 40px;
 }
 
 .controls-button-shuffle {
-  margin-left: 40px;
+  margin-right: 40px;
 }
 
 .controls-button-repeat path,
@@ -213,7 +216,7 @@
 }
 
 .menu-button-mp {
-  position: fixed;
+  position: absolute;
   right: 0;
   z-index: 3;
   margin: 25px 25px 0 0;
