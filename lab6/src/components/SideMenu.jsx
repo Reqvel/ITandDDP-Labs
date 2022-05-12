@@ -1,10 +1,9 @@
 import { ReactComponent as LinkIcon } from '../svgs/Link.svg'
 import { Link } from "react-router-dom"
-import { signOut } from '../actions/SignOut.js'
 import '../css/music-player.css'
 import '../css/base.css'
 
-const SideMenu = ({ isShown, showHideSideMenu }) => {
+const SideMenu = ({ isShown, showHideSideMenu, signOutOnClick }) => {
     return (
         <aside className={isShown ? "side-menu" : "side-menu side-menu-hidden"}>
             <ul>
@@ -31,7 +30,7 @@ const SideMenu = ({ isShown, showHideSideMenu }) => {
                     <Link to="/" 
                         id="sign-out" 
                         className="a menu-opt-button text nav-text cursor-pointer"
-                        onClick={() => {showHideSideMenu(); signOut(); }}>Sign Out</Link>
+                        onClick={() => {showHideSideMenu(); signOutOnClick(); }}>Sign Out</Link>
                 </li>
             </ul>            
         </aside>

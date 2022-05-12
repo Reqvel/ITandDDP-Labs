@@ -178,8 +178,12 @@ const PlayerFooter = () => {
                 <div className="text progress-time progress-time-played cursor-default">{timePlayed}</div>
                 <div className="controls">
                     <div className="controls-left">
-                        <img src={trackImgSrc}
-                            className="track-img track-img-compact"/>
+                            {
+                                trackImgSrc === ""
+                                ? <img className="track-img track-img-compact"/>  
+                                : <img src={trackImgSrc}
+                                    className="track-img track-img-compact"/>
+                            }
                         <div className="controls-left-track-info">
                             <span className="text song-name-compact cursor-default">{trackTitle}</span>
                             <span className="text artist-compact cursor-default">{trackArtists}</span>

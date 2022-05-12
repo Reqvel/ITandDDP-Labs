@@ -169,7 +169,7 @@
 
 .controls-button-selected .controls-button-icon path,
 .controls-button-selected .controls-button-icon:hover path {
-  fill: var(--white);
+  fill: var(--spotify-green);
 }
 
 .controls-button-repeat {

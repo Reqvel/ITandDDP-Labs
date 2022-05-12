@@ -8,6 +8,7 @@ import PlayerFooter from '../components/PlayerFooter';
 import { Outlet } from 'react-router-dom';
 import { accessTokenKey } from '../API.js'
 import { getArtistsNames } from '../common/GetArtistsNames.js'
+import { signOut } from '../actions/SignOut.js'
 
 export const TrackVisualsContext = React.createContext({
     trackImgSrc: "",
@@ -99,6 +100,11 @@ const PlayerPage = () => {
         };
     }, []);
 
+    function disconnectPlayer() {	
+        player.disconnect()
+        signOut()
+    }
+
     return (
         <>
             <TrackVisualsContext.Provider value={trackVisualsValue}>
@@ -107,8 +113,8 @@ const PlayerPage = () => {
                 <div className="body-flexbox-column body-flexbox-column-100 appear-animation">
                     <PlaybackStateContext.Provider value={playbackStateValue}>
                         <main className="main-music-player">
-                            <SideMenu  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
-                            <SideMenuBtn  isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                            <SideMenu signOutOnClick={disconnectPlayer} isShown={isShown} showHideSideMenu={showHideSideMenu}/>
+                            <SideMenuBtn isShown={isShown} showHideSideMenu={showHideSideMenu}/>
                             <PlayerLeft />
                             <PlayerRight>
                                 <Outlet />
