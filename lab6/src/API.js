@@ -21,7 +21,8 @@ function generateRandomString(length) {
 
 export function loginUser() {
     const clientId = 'c08f78ac1d1c44d687025fe762044f88';
-    const redirectUri = 'http://localhost:3000/MusicPlayer'; // FOR DEV
+    // const redirectUri = 'http://localhost:3000/MusicPlayer'; // FOR DEV
+    const redirectUri = 'https://spotifee-99d72.web.app/MusicPlayer' // FOR DEPLOY
 
     const state = generateRandomString(16);
     localStorage.setItem(stateKey, state);
@@ -31,6 +32,7 @@ export function loginUser() {
         scope += 'user-library-modify ';
         scope += 'user-library-read ';
         scope += 'user-modify-playback-state ';
+        scope += 'user-read-playback-state ';
         scope += 'playlist-read-private ';
         scope += 'streaming ';
 
@@ -90,21 +92,6 @@ export async function transferPlayback(device_ids) {
 
     const response = await fetch(url, options);
     if(response.ok) console.log("Playback transferred")
-}
-
-
-export async function getCurrentlyPlayingTrack() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/currently-playing';
-    const options = {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
-            'Content-Type': 'application/json'
-        }
-    }
-
-    const response = await fetch(url, options);
 }
 
 
@@ -189,8 +176,6 @@ export async function startResumePlayback(trackUri, progressMs=0, contextUri="",
     }
 
     const response = await fetch(url, options);
-    const json = await response.json();
-    console.log(json)
     if(response.status == 404) alert("Please connect to the Spotifee Web Player using Spotify Web Player or Spotify App")
 }
 
@@ -240,9 +225,12 @@ export async function skipToPrevious() {
 }
 
 
-export async function setRepeatMode(state) {
+export async function setRepeatMode(state, deviceId="") {
     const storedAccessToken = localStorage.getItem(accessTokenKey);
     var url = 'https://api.spotify.com/v1/me/player/repeat?state=' + state;
+    if(deviceId){
+        url += '&device_id=' + deviceId
+    }
     const options = {
         method: 'PUT',
         headers: {

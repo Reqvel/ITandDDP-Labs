@@ -1,8 +1,8 @@
 import '../css/base.css'
 import SideNav from './SideNav';
-import { ReactComponent as MenuIconS } from '../svgs/MenuIconS.svg'
 import { Link } from "react-router-dom"
 import { useState } from 'react';
+import SideNavBtn from './SideNavBtn';
 
 const Header = () => {
   const [isShown, setIsShown] = useState(false)
@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <div className="header-container">
-      <div className="header">
+      <header className="header">
         <div className="side-nav-counter-block"></div>
         <nav>
             <ul className="header-ul header-ul-left">
@@ -33,12 +33,8 @@ const Header = () => {
                 </li>
             </ul>
         </nav>
-        <button 
-          className={isShown ? "menu-button menu-button-media cursor-pointer menu-button-selected" : "menu-button menu-button-media cursor-pointer"}
-          onClick={showHideSideNav}>
-          <MenuIconS />
-        </button>
-      </div>
+        <SideNavBtn isShown={isShown} onClick={showHideSideNav}/>
+      </header>
       <SideNav isShown={isShown}/>
     </div>
   )

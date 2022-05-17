@@ -181,7 +181,11 @@
     background-color: var(--white);
 }
 
-.menu-button, 
+.menu-button {
+    display: flex;
+    background-color: transparent;
+}
+
 .menu-opt-button {
     background-color: transparent;
 }

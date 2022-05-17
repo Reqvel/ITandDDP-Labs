@@ -19,9 +19,9 @@ function validateLogin() {
     }
     else {
         const params = getHashParams();
-        const token = params.access_token,
-            state = params.state,
-            storedState = localStorage.getItem(stateKey);
+        const token = params.access_token
+        const state = params.state
+        const storedState = localStorage.getItem(stateKey);
 
         if (token && state === storedState) {
             localStorage.removeItem(stateKey);
@@ -29,7 +29,7 @@ function validateLogin() {
             return true
         }
         else if (token && (state == null || state !== storedState)){
-            alert('There was an error during the authentication');
+            alert('There was an error during the authentication (state)');
             return false
         }
     }

@@ -1,5 +1,5 @@
 export function getArtistsNames(artists) {
-    var names = ''
+    let names = ''
     for (const artist of artists) {
         names += artist.name
         names += ', '

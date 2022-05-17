@@ -67,11 +67,11 @@ const PlayerFooter = () => {
             const contextRepeatState = "context";
             const repeatState = state.repeat_state;
             if (repeatState === offRepeatState) {
-                setRepeatModeAPI(trackRepeatState);
+                setRepeatModeAPI(trackRepeatState, deviceId);
                 setRepeatMode(2)
             }
             else if (repeatState === trackRepeatState || repeatState === contextRepeatState) {
-                setRepeatModeAPI(offRepeatState);
+                setRepeatModeAPI(offRepeatState, deviceId);
                 setRepeatMode(0)
             }
         }
@@ -163,7 +163,7 @@ const PlayerFooter = () => {
     }
 
     return (
-        <div className="footer">
+        <footer className="footer">
             <input type="range" 
                     className="progress-bar progress-bar-playback slider-progress" 
                     min="0" 
@@ -211,7 +211,7 @@ const PlayerFooter = () => {
                 </div>
                 <div className="text progress-time progress-time-left cursor-default">{timeLeft}</div>
             </div>
-        </div>
+        </footer>
     )
 }
 
