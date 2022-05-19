@@ -1,3 +1,6 @@
+import '../css/music-player.css'
+import '../css/base.css'
+import '../css/progress-bar.css'
 import React, { useEffect, useState } from 'react';
 import BackgroundMp from '../components/BackgroundMP';
 import SideMenuBtn from "../components/SideMenuBtn";
@@ -6,7 +9,7 @@ import PlayerLeft from '../components/PlayerLeft';
 import PlayerRight from '../components/PlayerRight';
 import PlayerFooter from '../components/PlayerFooter';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { accessTokenKey } from '../API.js'
+import { accessTokenKey, transferPlayback } from '../API.js'
 import { getArtistsNames } from '../common/GetArtistsNames.js'
 
 export const TrackVisualsContext = React.createContext({
@@ -78,7 +81,6 @@ const PlayerPage = () => {
             setPlayer(player);
     
             player.addListener('ready', ({ device_id }) => {
-                // transferPlayback([device_id]) // Not always working 
                 setDeviceId(device_id)
                 console.log('Ready with Device ID', device_id);
             });
@@ -102,12 +104,16 @@ const PlayerPage = () => {
     
             player.connect();
         }
-        return () => player.disconnect();
+        return () => player?.disconnect();
     }, []);
 
     useEffect( () => {
-        if(player) navigate('Search')
+        if(player) navigate('Playlists')
     }, [player])
+
+    useEffect( () => {
+        if(deviceId) transferPlayback([deviceId])
+    }, [deviceId])
 
     return (
         <>

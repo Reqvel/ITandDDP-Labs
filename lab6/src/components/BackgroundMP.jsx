@@ -9,7 +9,7 @@ const BackgroundMp = () => {
 
     function changeBackground(e) {
         const colors = getBgColors(e.target)
-        var newBackground = 'linear-gradient(180deg,'
+        let newBackground = 'linear-gradient(180deg,'
             newBackground += colors[0] + ' 0%,'
             newBackground += colors[1] + ' 30%,'
             newBackground += '#1C1C1C 100%)'
@@ -17,8 +17,8 @@ const BackgroundMp = () => {
     }
 
     const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.onload = changeBackground
+          img.crossOrigin = "anonymous";
+          img.onload = changeBackground
 
     useEffect( () => {
         if(trackImgSrc) img.src = trackImgSrc

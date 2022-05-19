@@ -1,5 +1,3 @@
-import '../css/main-sign-in.css'
-import '../css/base.css'
 import { loginUser } from '../API'
 
 const SignIn = () => {

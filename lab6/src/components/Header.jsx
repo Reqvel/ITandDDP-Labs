@@ -1,8 +1,8 @@
-import '../css/base.css'
-import SideNav from './SideNav';
-import { Link } from "react-router-dom"
 import { useState } from 'react';
+import { Link } from "react-router-dom"
+import SideNav from './SideNav';
 import SideNavBtn from './SideNavBtn';
+import ListItemLink from './ListItemLink';
 
 const Header = () => {
   const [isShown, setIsShown] = useState(false)
@@ -14,23 +14,17 @@ const Header = () => {
         <div className="side-nav-counter-block"></div>
         <nav>
             <ul className="header-ul header-ul-left">
-                <li>
-                    <Link to="/" className="a text nav-text">About</Link>
-                </li>
-                <li>
-                    <Link to="/" className="a text nav-text">Support</Link>
-                </li>
+              <ListItemLink to={"/"} text={"About"}/>
+              <ListItemLink to={"/"} text={"Support"}/>
             </ul>
         </nav>
         <Link to="/" className="a text logo-text cursor-pointer">Spotifee</Link>
         <nav>
             <ul className="header-ul header-ul-right">
-                <li>
-                    <Link to="/SignIn" className="a text nav-text cursor-pointer">Sign In</Link>
-                </li>
-                <li>
-                    <a href="https://www.spotify.com/us/signup" className="a text nav-text">Sign Up</a>
-                </li>
+              <ListItemLink to={"/SignIn"} text={"Sign In"}/>
+              <ListItemLink to={"https://www.spotify.com/us/signup"} 
+                          text={"Sign Up"} 
+                          isExternal={true}/>
             </ul>
         </nav>
         <SideNavBtn isShown={isShown} onClick={showHideSideNav}/>

@@ -1,14 +1,13 @@
-import '../css/music-player.css'
+import { useContext } from 'react'
+import { Link } from "react-router-dom"
 import { nextItemsUrlKey, getTracksFromPlaylist } from '../API'
 import { TracksContext, HeaderContext, UriContext } from '../pages/PlaylistsPage'
-import { Link } from "react-router-dom"
-import { useContext } from 'react'
 import { extractTracks } from '../common/ExtractTracks'
 
 const PlaylistCard = ({ playlist }) => {
-    const { tracks, setTracks } = useContext(TracksContext)
-    const { header, setHeader } = useContext(HeaderContext)
-    const { contextUri, setContextUri } = useContext(UriContext)
+    const { setTracks } = useContext(TracksContext)
+    const { setHeader } = useContext(HeaderContext)
+    const { setContextUri } = useContext(UriContext)
 
     async function setPlaylistData(id, title) {
         const res = await getTracksFromPlaylist(id)

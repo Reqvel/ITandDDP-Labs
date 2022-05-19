@@ -1,13 +1,12 @@
 import { ReactComponent as MenuIconM } from '../svgs/MenuIconM.svg'
-import '../css/music-player.css'
-import '../css/base.css'
+import clsx from 'clsx';
 
 const SideMenuBtn = ({ isShown, showHideSideMenu }) => {
     return (
-        <button className={isShown ? 
-                            "menu-button menu-button-mp cursor-pointer menu-button-selected" :
-                            "menu-button menu-button-mp cursor-pointer"}
-                onClick={showHideSideMenu}>
+        <button className={ clsx({
+            "menu-button menu-button-mp cursor-pointer": true,
+            "menu-button-selected": isShown
+        }) } onClick={showHideSideMenu}>
             <MenuIconM />
         </button>
     )

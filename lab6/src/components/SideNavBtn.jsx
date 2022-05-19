@@ -7,8 +7,7 @@ const SideNavBtn = ({ isShown, onClick }) => {
           className={ clsx({
               "menu-button menu-button-media cursor-pointer": true,
               "menu-button-selected": isShown
-          }) }
-          onClick={onClick}>
+          }) } onClick={onClick}>
           <MenuIconS />
         </button>
     )

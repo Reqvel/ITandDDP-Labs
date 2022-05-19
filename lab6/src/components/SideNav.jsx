@@ -1,22 +1,13 @@
-import '../css/base.css'
-import { Link } from "react-router-dom"
+import ListItemLink from './ListItemLink'
 
 const SideNav = ({ isShown }) => {
     return (
         <div className={isShown ? 'side-nav' : 'side-nav side-nav-hidden'}>
             <ul>
-                <li>
-                    <Link to="/" className="a text nav-text">About</Link>
-                </li>
-                <li>
-                    <Link to="/" className="a text nav-text">Support</Link>
-                </li>
-                <li>
-                    <Link to="/SignIn" className="a text nav-text">Sign In</Link>
-                </li>
-                <li>
-                    <a href="https://www.spotify.com/us/signup" className="a text nav-text">Sign Up</a>
-                </li>
+                <ListItemLink to={"/"} text={"About"}/>
+                <ListItemLink to={"/"} text={"Support"}/>
+                <ListItemLink to={"/SignIn"} text={"Sign In"}/>
+                <ListItemLink to={"https://www.spotify.com/us/signup"} text={"Sign Up"} isExternal={true}/>
             </ul>
         </div>
     )

@@ -8,10 +8,10 @@ export const itemTypePlaylistItems = 'playlist items';
 
 
 function generateRandomString(length) {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (var i = 0; i < length; i++) {
+    for (let i = 0; i < length; i++) {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
 
@@ -21,13 +21,13 @@ function generateRandomString(length) {
 
 export function loginUser() {
     const clientId = 'c08f78ac1d1c44d687025fe762044f88';
-    // const redirectUri = 'http://localhost:3000/MusicPlayer'; // FOR DEV
-    const redirectUri = 'https://spotifee-99d72.web.app/MusicPlayer' // FOR DEPLOY
+    const redirectUri = 'http://localhost:3000/MusicPlayer'; // FOR DEV
+    // const redirectUri = 'https://spotifee-99d72.web.app/MusicPlayer' // FOR DEPLOY
 
     const state = generateRandomString(16);
     localStorage.setItem(stateKey, state);
 
-    var scope = 'user-read-private ';
+    let scope = 'user-read-private ';
         scope += 'user-read-email ';
         scope += 'user-library-modify ';
         scope += 'user-library-read ';
@@ -36,7 +36,7 @@ export function loginUser() {
         scope += 'playlist-read-private ';
         scope += 'streaming ';
 
-    var url = 'https://accounts.spotify.com/authorize';
+    let url = 'https://accounts.spotify.com/authorize';
         url += '?response_type=token';
         url += '&client_id=' + encodeURIComponent(clientId);
         url += '&scope=' + encodeURIComponent(scope);
@@ -48,20 +48,19 @@ export function loginUser() {
 
 
 async function getUserInfo() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    if(storedAccessToken) {
+    const token = localStorage.getItem(accessTokenKey);
+    if(token) {
         const url =  'https://api.spotify.com/v1/me';
         const options = {
             headers: {
-                'Authorization': 'Bearer ' + storedAccessToken
+                'Authorization': 'Bearer ' + token
             }
         }   
 
         const response = await fetch(url, options);
-        if(response.status == 401) alert("Please sign out and login again")
-        const json = await response.json();
         if (response.ok) {
-            return json;
+            const res = await response.json();
+            return res;
         }
     }
     return null;
@@ -77,30 +76,30 @@ export async function getUsername() {
 }
 
 
-export async function transferPlayback(device_ids) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player';
-    var bodyOpt = { "device_ids": device_ids }
+export function transferPlayback(deviceIds) {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player';
+    const bodyOpt = { "device_ids": deviceIds }
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
-            'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
         },
         body:  JSON.stringify(bodyOpt)
     }
 
-    const response = await fetch(url, options);
-    if(response.ok) console.log("Playback transferred")
+    fetch(url, options);
 }
 
 
 export async function getCurrentPlaylists(nextUrl="") {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/me/playlists'
+    const token = localStorage.getItem(accessTokenKey);
+    const url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/me/playlists'
     const options = {
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken
+            'Authorization': 'Bearer ' + token
         }
     }   
 
@@ -114,157 +113,158 @@ export async function getCurrentPlaylists(nextUrl="") {
 
 
 export async function getTracksFromPlaylist(id, nextUrl="") {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-        var url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/playlists/' + id + '/tracks';
-        const options = {
-            headers: {
-                'Authorization': 'Bearer ' + storedAccessToken
-            }
-        }   
-
-        const response = await fetch(url, options);
-        if (response.ok) {
-            const res = await response.json();
-            var playlistId = res.href.substring(
-                res.href.indexOf("playlists/") + "playlists/".length, 
-                res.href.indexOf("/tracks")
-            );
-            return [res.items, res.next, itemTypePlaylistItems, playlistId]
+    const token = localStorage.getItem(accessTokenKey);
+    const url = nextUrl ? nextUrl : 'https://api.spotify.com/v1/playlists/' + id + '/tracks';
+    const options = {
+        headers: {
+            'Authorization': 'Bearer ' + token
         }
+    }   
+
+    const response = await fetch(url, options);
+    if (response.ok) {
+        const res = await response.json();
+        const playlistId = res.href.substring(
+            res.href.indexOf("playlists/") + "playlists/".length, 
+            res.href.indexOf("/tracks")
+        );
+        return [res.items, res.next, itemTypePlaylistItems, playlistId]
+    }
     return null;
 }
 
 
 export async function getPlaybackState() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player';
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player';
     const options = {
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         },
     }   
 
     const response = await fetch(url, options);
     if (response.ok) {
-        const json = await response.json();
-        return json;
+        const res = await response.json();
+        return res;
     }
     return null;
 }
 
 
-export async function startResumePlayback(trackUri, progressMs=0, contextUri="", deviceId="") {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/play';
+export function startResumePlayback(trackUri, progressMs=0, contextUri="", deviceId="") {
+    const token = localStorage.getItem(accessTokenKey);
+
+    let url = 'https://api.spotify.com/v1/me/player/play';
     if(deviceId){
         url += '?device_id=' + deviceId
     }
-    var bodyOpt = { "position_ms": progressMs }
+
+    let bodyOpt = { "position_ms": progressMs }
     if(contextUri) {
         bodyOpt["context_uri"] = contextUri 
         bodyOpt["offset"] = { "uri": trackUri }
-    } 
-    else bodyOpt["uris"] = [trackUri]
+    } else bodyOpt["uris"] = [trackUri]
+
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         },
         body:  JSON.stringify(bodyOpt)
     }
 
-    const response = await fetch(url, options);
-    if(response.status == 404) alert("Please connect to the Spotifee Web Player using Spotify Web Player or Spotify App")
+    fetch(url, options);
 }
 
 
-export async function pausePlayback() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/pause';
+export function pausePlayback() {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player/pause';
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function skipToNext() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/next';
+export function skipToNext() {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player/next';
     const options = {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function skipToPrevious() {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/previous';
+export function skipToPrevious() {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player/previous';
     const options = {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function setRepeatMode(state, deviceId="") {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/repeat?state=' + state;
+export function setRepeatMode(state, deviceId="") {
+    const token = localStorage.getItem(accessTokenKey);
+    let url = 'https://api.spotify.com/v1/me/player/repeat?state=' + state;
     if(deviceId){
         url += '&device_id=' + deviceId
     }
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function togglePlaybackShuffle(state) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/shuffle?state=' + state;
+export function togglePlaybackShuffle(state) {
+    const token = localStorage.getItem(accessTokenKey);
+    let url = 'https://api.spotify.com/v1/me/player/shuffle?state=' + state;
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
 export async function checkUsersSavedTracks(ids) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/tracks/contains?ids=' + ids.join(',');
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/tracks/contains?ids=' + ids.join(',');
     const options = {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
@@ -278,81 +278,82 @@ export async function checkUsersSavedTracks(ids) {
 }
 
 
-export async function saveTracks(ids) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
+export function saveTracks(ids) {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function removeTracks(ids) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
+export function removeTracks(ids) {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/tracks?ids=' + ids.join(',');
     const options = {
         method: 'DELETE',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function setPlaybackVolume(volumePercent) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volumePercent
+export function setPlaybackVolume(volumePercent) {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = 'https://api.spotify.com/v1/me/player/volume?volume_percent=' + volumePercent
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
-export async function seekToPosition(positionMs) {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + positionMs
+export function seekToPosition(positionMs) {
+    const token = localStorage.getItem(accessTokenKey);
+    const url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + positionMs
     const options = {
         method: 'PUT',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   
 
-    const response = await fetch(url, options);
+    fetch(url, options);
 }
 
 
 export async function searchForTracks(searchStr, nextUrl="") {
-    const storedAccessToken = localStorage.getItem(accessTokenKey);
-    var url = ""
+    const token = localStorage.getItem(accessTokenKey);
+
+    let url = ""
     if(!nextUrl) {
         url = "https://api.spotify.com/v1/search?q="
         url += searchStr
         url += "&type=" + itemTypeTrack
-    }
-    else {
+    } else {
         url = nextUrl
     }
+    
     const options = {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + storedAccessToken,
+            'Authorization': 'Bearer ' + token,
             'Content-Type': 'application/json'
         }
     }   

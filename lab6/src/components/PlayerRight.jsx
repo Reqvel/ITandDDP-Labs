@@ -1,7 +1,5 @@
-import Backgroundfilter from './BackgroundFilter'
-import '../css/music-player.css'
-import '../css/base.css'
 import { Outlet } from 'react-router-dom'
+import Backgroundfilter from './BackgroundFilter'
 
 const PlayerRight = () => {
     return (

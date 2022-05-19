@@ -1,5 +1,3 @@
-import '../css/music-player.css'
-import '../css/base.css'
 import { useContext } from 'react'
 import { TrackVisualsContext } from '../pages/PlayerPage'
 

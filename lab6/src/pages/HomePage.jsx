@@ -1,3 +1,4 @@
+import '../css/main-home.css'
 import BackgroundMain from "../components/BackgroundMain"
 import Header from "../components/Header"
 import Home from "../components/Home"

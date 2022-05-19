@@ -7,8 +7,8 @@ import { extractTracks } from '../common/ExtractTracks'
 
 const PlaylistTracks = () => {
     const { tracks, setTracks } = useContext(TracksContext)
-    const { header, setHeader } = useContext(HeaderContext)
-    const { contextUri, setContextUri } = useContext(UriContext)
+    const { header } = useContext(HeaderContext)
+    const { contextUri } = useContext(UriContext)
 
     async function getPlaylistTracks(nextUrl="") {
         const res = await getTracksFromPlaylist("", nextUrl)

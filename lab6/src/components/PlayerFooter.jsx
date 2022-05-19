@@ -1,6 +1,3 @@
-import '../css/music-player.css'
-import '../css/base.css'
-import '../css/progress-bar.css'
 import PlayPauseBtn from './MusicPlayerControls/PlayPauseBtn'
 import RepeatBtn from './MusicPlayerControls/RepeatBtn'
 import PrevBtn from './MusicPlayerControls/PrevBtn'
